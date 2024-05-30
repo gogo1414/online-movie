@@ -4,24 +4,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import model.Ticket;
 import util.DBConnection;
 
 public class TicketDAO {
 
-    public List<Ticket> getTicketsByBooking(int bookingID) throws SQLException {
-        List<Ticket> tickets = new ArrayList<>();
+	public Ticket getTicketByBookingID(int bookingID) throws SQLException {
+        Ticket ticket = null;
         Connection conn = DBConnection.getConnection();
         String query = "SELECT * FROM tickets WHERE BookingID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, bookingID);
         ResultSet rs = stmt.executeQuery();
 
-        while (rs.next()) {
-            Ticket ticket = new Ticket();
+        if (rs.next()) {
+            ticket = new Ticket();
             ticket.setTicketID(rs.getInt("TicketID"));
             ticket.setScheduleID(rs.getInt("ScheduleID"));
             ticket.setTheaterID(rs.getInt("TheaterID"));
@@ -30,10 +28,9 @@ public class TicketDAO {
             ticket.setIssued(rs.getBoolean("IsIssued"));
             ticket.setStandardPrice(rs.getInt("StandardPrice"));
             ticket.setSalePrice(rs.getInt("SalePrice"));
-            tickets.add(ticket);
         }
 
-        return tickets;
+        return ticket;
     }
 
     public Ticket getTicketByID(int ticketID) throws SQLException {

@@ -131,4 +131,3 @@ public class BookingScreen extends JFrame {
         });
     }
 }
-

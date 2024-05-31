@@ -9,10 +9,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import find_catalog.FindMovieCatalog;
+import find_catalog.MovieListScreen;
 import model.Customer;
 
 public class MainMenuScreen extends JFrame {
-    private Customer customer;
+    public static Customer customer;
 
     public MainMenuScreen(Customer customer) {
         this.customer = customer;
@@ -29,7 +31,7 @@ public class MainMenuScreen extends JFrame {
         movieListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MovieListScreen().setVisible(true);
+                new FindMovieCatalog().setVisible(true);
                 dispose();
             }
         });
@@ -51,6 +53,7 @@ public class MainMenuScreen extends JFrame {
                 dispose();
             }
         });
+        
 
         panel.add(movieListButton);
         panel.add(bookMovieButton);

@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import find_catalog.MovieListScreen;
 import model.Movie;
 
 public class MovieDetailsScreen extends JFrame {

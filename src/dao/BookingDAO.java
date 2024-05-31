@@ -10,6 +10,7 @@ import java.util.List;
 import model.Booking;
 import util.DBConnection;
 
+
 public class BookingDAO {
 
     public List<Booking> getBookingsByCustomer(String customerID) throws SQLException {

@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -33,6 +35,7 @@ public class BookingHistoryScreen extends JFrame {
     private DefaultListModel<String> listModel;
     private JButton cancelButton;
     private JButton detailsButton;
+    private JButton backButton;
 
     public BookingHistoryScreen(Customer customer) {
         this.customer = customer;
@@ -79,16 +82,33 @@ public class BookingHistoryScreen extends JFrame {
                 }
             }
         });
-
+        
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            new MainMenuScreen(MainMenuScreen.customer).setVisible(true);
+            dispose();
+        });
+        
         loadBookings();
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(scrollPane);
-        panel.add(detailsButton);
-        panel.add(cancelButton);
+        // Top panel for the back button
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.add(backButton);
 
-        add(panel);
+        // Main panel for the list and buttons
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Bottom panel for the details and cancel buttons
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomPanel.add(detailsButton);
+        bottomPanel.add(new JPanel()); // Empty panel to fill space
+        bottomPanel.add(cancelButton);
+
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        add(mainPanel);
     }
 
     private void loadBookings() {

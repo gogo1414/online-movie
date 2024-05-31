@@ -113,7 +113,7 @@ public class BookingHistoryScreen extends JFrame {
 
     private void loadBookings() {
         try {
-            List<Booking> bookings = bookingDAO.getBookingsByCustomer(customer.getCustomerID());
+            List<Booking> bookings = bookingDAO.getBookingsByCustomer(MainMenuScreen.customer.getCustomerID());
             for (Booking booking : bookings) {
                 // For simplicity, assuming bookingID as a string with format "BookingID: MovieTitle"
                 listModel.addElement(booking.getBookingID() + ": " + "Movie Title Placeholder");

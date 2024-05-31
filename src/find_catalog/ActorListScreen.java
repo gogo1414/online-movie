@@ -8,6 +8,8 @@ public class ActorListScreen extends JFrame{
 		setSize(500,500);
 		 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
+		 
+		 
 		 setVisible(true);
 	}
 

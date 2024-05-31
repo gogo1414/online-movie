@@ -67,4 +67,3 @@ public class Customer {
         this.isAdmin = isAdmin;
     }
 }
-

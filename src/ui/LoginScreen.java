@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -15,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import dao.CustomerDAO;
 import model.Customer;
+
 
 public class LoginScreen extends JFrame {
     private JTextField usernameField;
@@ -54,27 +57,44 @@ public class LoginScreen extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                
-                try {
-                    Customer customer = customerDAO.authenticate(username, password);
-                    
-                    if (customer != null) {
-                        JOptionPane.showMessageDialog(LoginScreen.this, "Login Successful!");
-                        new MainMenuScreen(customer).setVisible(true);
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(LoginScreen.this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(LoginScreen.this, "Database error.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                performLogin();
             }
         });
 
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    performLogin();
+                }
+            }
+        };
+
+        usernameField.addKeyListener(enterKeyListener);
+        passwordField.addKeyListener(enterKeyListener);
+        loginButton.addKeyListener(enterKeyListener);
+
         add(panel);
+    }
+
+    private void performLogin() {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        try {
+            Customer customer = customerDAO.authenticate(username, password);
+
+            if (customer != null) {
+                JOptionPane.showMessageDialog(this, "Login Successful!");
+                new MainMenuScreen(customer).setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database error.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {

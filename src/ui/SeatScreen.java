@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.swing.*;
 
 import find_catalog.MovieListScreen;
+import model.AllMovieInfo;
 
 public class SeatScreen extends JFrame {
 
@@ -37,6 +38,8 @@ public class SeatScreen extends JFrame {
 
     private JLabel totalPeopleLabel;
     private JLabel totalPriceLabel;
+    
+    private JButton backButton = new JButton("Back");
 
     public SeatScreen() {
 
@@ -48,7 +51,14 @@ public class SeatScreen extends JFrame {
 
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
-
+        
+        backButton.setBounds(670,610,100,40);
+        mainPanel.add(backButton);
+        backButton.addActionListener(e->{
+        	new BookingScreen(AllMovieInfo.movie).setVisible(true);
+        	dispose();
+        });
+        
         seatPanel = new JPanel();
         seatPanel.setBounds(30, 30, 500, 500);
         seatPanel.setBackground(Color.white);

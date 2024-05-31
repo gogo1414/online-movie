@@ -10,12 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import find_catalog.MovieListScreen;
+import model.AllMovieInfo;
 import model.Movie;
 
 public class MovieDetailsScreen extends JFrame {
     private Movie movie;
 
     public MovieDetailsScreen(Movie movie) {
+    	AllMovieInfo.movie = movie;
         this.movie = movie;
 
         setTitle("영화 상세정보");

@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import dao.CustomerDAO;
+import model.AllMovieInfo;
 import model.Customer;
 
 
@@ -24,15 +25,29 @@ public class LoginScreen extends JFrame {
     private JPasswordField passwordField;
     private JButton loginButton;
     private CustomerDAO customerDAO = new CustomerDAO();
-
-    public LoginScreen() {
+    private String userOrAdmin;
+    private JButton backButton = new JButton("Back");
+    
+    
+    public LoginScreen(String userOrAdmin) {
+    	this.userOrAdmin =userOrAdmin;
+    	
         setTitle("Login");
-        setSize(300, 200);
+        setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
+       
+        
         JPanel panel = new JPanel();
         panel.setLayout(null);
+        backButton.setBounds(10,120,80,30);
+        panel.add(backButton);
+        
+        backButton.addActionListener(e->{
+        	new AdminOrUserScreen().setVisible(true);
+        	dispose();
+        });
+        
 
         JLabel userLabel = new JLabel("User");
         userLabel.setBounds(10, 20, 80, 25);
@@ -45,10 +60,21 @@ public class LoginScreen extends JFrame {
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(10, 50, 80, 25);
         panel.add(passwordLabel);
+        
+       
 
         passwordField = new JPasswordField(20);
         passwordField.setBounds(100, 50, 165, 25);
         panel.add(passwordField);
+        
+        if(userOrAdmin.equals("User")) {
+        	usernameField.setText("user1");
+        	passwordField.setText("user1");
+        }
+        else {
+        	usernameField.setText("root");
+        	passwordField.setText("1234");
+        }
 
         loginButton = new JButton("Login");
         loginButton.setBounds(10, 80, 80, 25);
@@ -86,6 +112,7 @@ public class LoginScreen extends JFrame {
 
             if (customer != null) {
                 JOptionPane.showMessageDialog(this, "Login Successful!");
+                AllMovieInfo.customer=customer;
                 new MainMenuScreen(customer).setVisible(true);
                 dispose();
             } else {
@@ -101,7 +128,7 @@ public class LoginScreen extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new LoginScreen().setVisible(true);
+                new LoginScreen(null).setVisible(true);
             }
         });
     }

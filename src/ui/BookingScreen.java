@@ -23,6 +23,7 @@ import dao.MovieDAO;
 import dao.ScheduleDAO;
 import dao.SeatDAO;
 import dao.TheaterDAO;
+import model.AllMovieInfo;
 import model.Movie;
 import model.Schedule;
 import model.Theater;
@@ -92,6 +93,7 @@ public class BookingScreen extends JFrame {
 	private List<String> movies;
 	private DefaultListModel<String> listModel = new DefaultListModel<>();
 	private JList movielist;
+	private JButton backButton = new JButton("Back");
 	
 	public void loadMovies() throws SQLException {
 		movies = movieDAO.getAllMoviesName();
@@ -155,11 +157,13 @@ public class BookingScreen extends JFrame {
 		setVisible(true);
 		getContentPane().setLayout(null);
 		mainPanel.setBounds(13, 0, 799, 583);
+		
 
 		// main
 		getContentPane().add(mainPanel);
 		mainPanel.setLayout(null);
 		mNorthPanel.setBounds(0, 0, 799, 28);
+		
 
 		mainPanel.add(mNorthPanel);
 		mNorthPanel.setLayout(null);
@@ -172,13 +176,15 @@ public class BookingScreen extends JFrame {
 		mNorthPanel.add(nameLabel);
 		
 		
-		mEastPanel.setBounds(598, 38, 189, 545);
+		mEastPanel.setBounds(598, 38, 189, 600);
 		mainPanel.add(mEastPanel);
 		
 		mEastPanel.setLayout(null);
 		mEastSouthPanel.setBounds(0, 390, 178, 155);
 		
+		
 		mEastPanel.add(mEastSouthPanel);
+		
 		mEastSouthPanel.setLayout(new BorderLayout(0, 0));
 		JLabel blank_5 = new JLabel(" ");
 		JLabel blank_6 = new JLabel(" ");
@@ -188,10 +194,22 @@ public class BookingScreen extends JFrame {
 		mEastSouthPanel.add(blank_6, BorderLayout.SOUTH);
 		mEastSouthPanel.add(blank_7, BorderLayout.WEST);
 		mEastSouthPanel.add(blank_8, BorderLayout.EAST);
-
 		mEastSouthPanel.add(mEastSouthCenterPanel, BorderLayout.CENTER);
+		mEastSouthPanel.add(backButton,BorderLayout.SOUTH);
 		mEastSouthCenterPanel.setLayout(new GridLayout(5, 2));
-
+		backButton.addActionListener(e->{
+			
+			new MovieDetailsScreen(AllMovieInfo.movie).setVisible(true);
+			dispose();
+		});
+		
+		ticketingButton.addActionListener(e->{
+			new SeatScreen().setVisible(true);
+			dispose();
+		});
+		
+		
+		
 		JLabel lblNewLabel_1_1 = new JLabel("\uADF9\uC7A5 :");
 		JLabel lblNewLabel_5 = new JLabel("\uC778\uC6D0 :");
 		JLabel lblNewLabel_7 = new JLabel("금액 :");
@@ -347,7 +365,7 @@ public class BookingScreen extends JFrame {
 		teenagerLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 12));
 		teenagerLabel.setBounds(342, 116, 121, 15);
 		mCenerButtomPanel.add(teenagerLabel);
-		
+		backButton.setBounds(500,30,100,100);
 		
 		//관 gui
 		roomPanel.setBounds(12, 30, 322, 159);

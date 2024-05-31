@@ -17,6 +17,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import dao.MovieDAO;
+import model.AllMovieInfo;
 import model.Movie;
 import ui.MainMenuScreen;
 import ui.MovieDetailsScreen;
@@ -29,7 +30,7 @@ public class MovieListScreen extends JFrame {
 
     public MovieListScreen(String catalogue) {
     	this.catalogue = catalogue;
-    	
+    	AllMovieInfo.catalog = catalogue;
         setTitle("Movie List");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +86,7 @@ public class MovieListScreen extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainMenuScreen(MainMenuScreen.customer).setVisible(true);
+                new FindMovieCatalog().setVisible(true);
                 dispose();
             }
         });

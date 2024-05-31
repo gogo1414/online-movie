@@ -11,6 +11,21 @@ import model.Theater;
 import util.DBConnection;
 
 public class TheaterDAO {
+	
+	public List<String> getAllTheatersName() throws SQLException {
+        List<String> theatersName = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT TheaterName FROM theaters";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String theaterName = rs.getString("TheaterName");
+            theatersName.add(theaterName);
+        }
+
+        return theatersName;
+    }
 
     public List<Theater> getAllTheaters() throws SQLException {
         List<Theater> theaters = new ArrayList<>();
@@ -23,6 +38,7 @@ public class TheaterDAO {
             Theater theater = new Theater();
             theater.setTheaterID(rs.getInt("TheaterID"));
             theater.setSeatCount(rs.getInt("SeatCount"));
+            theater.setTheaterName(rs.getString("TheaterName"));
             theater.setActive(rs.getBoolean("IsActive"));
             theater.setWidth(rs.getInt("Width"));
             theater.setHeight(rs.getInt("Height"));
@@ -44,6 +60,7 @@ public class TheaterDAO {
             theater = new Theater();
             theater.setTheaterID(rs.getInt("TheaterID"));
             theater.setSeatCount(rs.getInt("SeatCount"));
+            theater.setTheaterName(rs.getString("TheaterName"));
             theater.setActive(rs.getBoolean("IsActive"));
             theater.setWidth(rs.getInt("Width"));
             theater.setHeight(rs.getInt("Height"));
@@ -54,25 +71,27 @@ public class TheaterDAO {
 
     public void addTheater(Theater theater) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        String query = "INSERT INTO theaters (TheaterID, SeatCount, IsActive, Width, Height) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO theaters (TheaterID, SeatCount, TheaterName, IsActive, Width, Height) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, theater.getTheaterID());
         stmt.setInt(2, theater.getSeatCount());
-        stmt.setBoolean(3, theater.isActive());
-        stmt.setInt(4, theater.getWidth());
-        stmt.setInt(5, theater.getHeight());
+        stmt.setString(3, theater.getTheaterName());
+        stmt.setBoolean(4, theater.isActive());
+        stmt.setInt(5, theater.getWidth());
+        stmt.setInt(6, theater.getHeight());
         stmt.executeUpdate();
     }
 
     public void updateTheater(Theater theater) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        String query = "UPDATE theaters SET SeatCount = ?, IsActive = ?, Width = ?, Height = ? WHERE TheaterID = ?";
+        String query = "UPDATE theaters SET SeatCount = ?, IsActive = ?, TheaterName = ?, Width = ?, Height = ? WHERE TheaterID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, theater.getSeatCount());
         stmt.setBoolean(2, theater.isActive());
-        stmt.setInt(3, theater.getWidth());
-        stmt.setInt(4, theater.getHeight());
-        stmt.setInt(5, theater.getTheaterID());
+        stmt.setString(3, theater.getTheaterName());
+        stmt.setBoolean(4, theater.isActive());
+        stmt.setInt(5, theater.getWidth());
+        stmt.setInt(6, theater.getHeight());
         stmt.executeUpdate();
     }
 

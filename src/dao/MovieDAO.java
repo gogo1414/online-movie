@@ -11,6 +11,21 @@ import model.Movie;
 import util.DBConnection;
 
 public class MovieDAO {
+	
+	public List<String> getAllMoviesName() throws SQLException {
+        List<String> moviesName = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT Title FROM movies";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+        	String name = rs.getString("Title");
+            moviesName.add(name);
+        }
+
+        return moviesName;
+    }
 
     public List<Movie> getAllMovies() throws SQLException {
         List<Movie> movies = new ArrayList<>();

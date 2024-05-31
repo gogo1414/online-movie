@@ -3,18 +3,28 @@ package model;
 public class Theater {
     private int theaterID;
     private int seatCount;
+    private String theaterName;
     private boolean isActive;
     private int width;
     private int height;
 
     public Theater() {}
 
-    public Theater(int theaterID, int seatCount, boolean isActive, int width, int height) {
+    public Theater(int theaterID, int seatCount, String theaterName, boolean isActive, int width, int height) {
         this.theaterID = theaterID;
         this.seatCount = seatCount;
+        this.theaterName = theaterName;
         this.isActive = isActive;
         this.width = width;
         this.height = height;
+    }
+    
+    public String getTheaterName() {
+    	return theaterName;
+    }
+    
+    public void setTheaterName(String theaterName) {
+    	this.setTheaterName(theaterName);
     }
 
     public int getTheaterID() {

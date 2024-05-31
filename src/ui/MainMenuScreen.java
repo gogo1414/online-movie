@@ -1,16 +1,17 @@
 package ui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import find_catalog.FindMovieCatalog;
-import find_catalog.MovieListScreen;
 import model.Customer;
 
 public class MainMenuScreen extends JFrame {
@@ -24,8 +25,9 @@ public class MainMenuScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         JButton movieListButton = new JButton("영화 조회 및 예매");
         movieListButton.addActionListener(new ActionListener() {
@@ -45,9 +47,13 @@ public class MainMenuScreen extends JFrame {
             }
         });
         
-
-        panel.add(movieListButton);
-        panel.add(bookingHistoryButton);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(movieListButton, gbc);
+        
+        gbc.gridy = 1;
+        panel.add(bookingHistoryButton, gbc);
 
         add(panel);
     }

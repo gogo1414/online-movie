@@ -27,7 +27,7 @@ public class MainMenuScreen extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JButton movieListButton = new JButton("영화 조회");
+        JButton movieListButton = new JButton("영화 조회 및 예매");
         movieListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,16 +35,7 @@ public class MainMenuScreen extends JFrame {
                 dispose();
             }
         });
-
-        JButton bookMovieButton = new JButton("영화 예매");
-        bookMovieButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MovieListScreen().setVisible(true); // 예매 화면으로 이동할 수 있도록 수정
-                dispose();
-            }
-        });
-
+        
         JButton bookingHistoryButton = new JButton("예매 내역 확인");
         bookingHistoryButton.addActionListener(new ActionListener() {
             @Override
@@ -56,7 +47,6 @@ public class MainMenuScreen extends JFrame {
         
 
         panel.add(movieListButton);
-        panel.add(bookMovieButton);
         panel.add(bookingHistoryButton);
 
         add(panel);

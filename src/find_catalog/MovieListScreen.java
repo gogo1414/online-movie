@@ -25,8 +25,11 @@ public class MovieListScreen extends JFrame {
     private MovieDAO movieDAO;
     private JList<String> movieList;
     private DefaultListModel<String> listModel;
+    public static String catalogue;
 
-    public MovieListScreen() {
+    public MovieListScreen(String catalogue) {
+    	this.catalogue = catalogue;
+    	
         setTitle("Movie List");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,10 +48,24 @@ public class MovieListScreen extends JFrame {
         detailsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedMovieTitle = movieList.getSelectedValue();
-                if (selectedMovieTitle != null) {
+                String selectedMovieCatalogue = movieList.getSelectedValue();
+                System.out.println(selectedMovieCatalogue);
+                Movie selectedMovie = null;
+                if (selectedMovieCatalogue != null) {
                     try {
-                        Movie selectedMovie = movieDAO.getMovieByTitle(selectedMovieTitle);
+                    	if(MovieListScreen.catalogue == "영화명") {
+                    		selectedMovie = movieDAO.getMovieByTitle(selectedMovieCatalogue);
+                        }
+                    	else if(MovieListScreen.catalogue == "배우명") {
+                    		selectedMovie = movieDAO.getMovieByActor(selectedMovieCatalogue);
+                    	}
+                    	else if(MovieListScreen.catalogue == "감독명") {
+                    		selectedMovie = movieDAO.getMovieByDirector(selectedMovieCatalogue);
+                    	}
+                    	else if(MovieListScreen.catalogue == "장르") {
+                    		selectedMovie = movieDAO.getMovieByGenre(selectedMovieCatalogue);
+                    	}
+                    	
                         if (selectedMovie != null) {
                             new MovieDetailsScreen(selectedMovie).setVisible(true);
                             dispose();
@@ -73,7 +90,7 @@ public class MovieListScreen extends JFrame {
             }
         });
 
-        loadMovies();
+        loadMovies(catalogue);
 
         JPanel panel = new JPanel();
         panel.setLayout(null); // 절대 레이아웃을 사용
@@ -83,11 +100,25 @@ public class MovieListScreen extends JFrame {
         add(panel);
     }
 
-    private void loadMovies() {
+    private void loadMovies(String catalogue) {
         try {
             List<Movie> movies = movieDAO.getAllMovies();
             for (Movie movie : movies) {
-                listModel.addElement(movie.getTitle());
+            	if(catalogue == "영화명") {
+            		listModel.addElement(movie.getTitle());
+            		}
+            	else if (catalogue == "감독명") {
+            		listModel.addElement(movie.getDirector());
+            	}
+            	else if (catalogue == "배우명") {
+            		listModel.addElement(movie.getActors());
+            	}
+            	else if (catalogue == "장르") {
+            		listModel.addElement(movie.getGenre());
+            	}
+            	else {
+            		listModel.addElement(movie.getRating());
+            	}
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -99,7 +130,7 @@ public class MovieListScreen extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MovieListScreen().setVisible(true);
+                new MovieListScreen("영화명").setVisible(true);
             }
         });
     }

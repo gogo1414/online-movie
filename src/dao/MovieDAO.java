@@ -128,4 +128,79 @@ public class MovieDAO {
 
         return movie;
     }
+    
+    public Movie getMovieByActor(String actor) throws SQLException {
+        Movie movie = null;
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM movies WHERE Actors = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, actor);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            movie = new Movie();
+            movie.setMovieID(rs.getInt("MovieID"));
+            movie.setTitle(rs.getString("Title"));
+            movie.setDuration(rs.getString("Duration"));
+            movie.setRating(rs.getString("Rating"));
+            movie.setDirector(rs.getString("Director"));
+            movie.setActors(rs.getString("Actors"));
+            movie.setGenre(rs.getString("Genre"));
+            movie.setStory(rs.getString("Story"));
+            movie.setReleaseDate(rs.getDate("ReleaseDate"));
+            movie.setScore(rs.getInt("Score"));
+        }
+
+        return movie;
+    }
+    
+    public Movie getMovieByGenre(String genre) throws SQLException {
+        Movie movie = null;
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM movies WHERE Genre = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, genre);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            movie = new Movie();
+            movie.setMovieID(rs.getInt("MovieID"));
+            movie.setTitle(rs.getString("Title"));
+            movie.setDuration(rs.getString("Duration"));
+            movie.setRating(rs.getString("Rating"));
+            movie.setDirector(rs.getString("Director"));
+            movie.setActors(rs.getString("Actors"));
+            movie.setGenre(rs.getString("Genre"));
+            movie.setStory(rs.getString("Story"));
+            movie.setReleaseDate(rs.getDate("ReleaseDate"));
+            movie.setScore(rs.getInt("Score"));
+        }
+
+        return movie;
+    }
+    
+    public Movie getMovieByDirector(String director) throws SQLException {
+        Movie movie = null;
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM movies WHERE Director = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, director);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            movie = new Movie();
+            movie.setMovieID(rs.getInt("MovieID"));
+            movie.setTitle(rs.getString("Title"));
+            movie.setDuration(rs.getString("Duration"));
+            movie.setRating(rs.getString("Rating"));
+            movie.setDirector(rs.getString("Director"));
+            movie.setActors(rs.getString("Actors"));
+            movie.setGenre(rs.getString("Genre"));
+            movie.setStory(rs.getString("Story"));
+            movie.setReleaseDate(rs.getDate("ReleaseDate"));
+            movie.setScore(rs.getInt("Score"));
+        }
+
+        return movie;
+    }
 }

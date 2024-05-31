@@ -22,7 +22,7 @@ public class FindMovieCatalog extends JFrame{
         movieListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MovieListScreen().setVisible(true);
+                new MovieListScreen("영화명").setVisible(true);
                 dispose();
             }
         });
@@ -31,7 +31,7 @@ public class FindMovieCatalog extends JFrame{
         directorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DirectorListScreen().setVisible(true); // 예매 화면으로 이동할 수 있도록 수정
+            	new MovieListScreen("감독명").setVisible(true); // 예매 화면으로 이동할 수 있도록 수정
                 dispose();
             }
         });
@@ -40,7 +40,7 @@ public class FindMovieCatalog extends JFrame{
         actorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ActorListScreen().setVisible(true);
+            	new MovieListScreen("배우명").setVisible(true);
                 dispose();
             }
         });
@@ -49,7 +49,7 @@ public class FindMovieCatalog extends JFrame{
         genreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GenreListScreen().setVisible(true);
+            	new MovieListScreen("장르").setVisible(true);
                 dispose();
             }
    

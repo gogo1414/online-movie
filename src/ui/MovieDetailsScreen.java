@@ -47,7 +47,7 @@ public class MovieDetailsScreen extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MovieListScreen().setVisible(true);
+                new MovieListScreen(MovieListScreen.catalogue).setVisible(true);
                 dispose();
             }
         });

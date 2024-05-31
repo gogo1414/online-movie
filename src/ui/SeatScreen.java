@@ -59,6 +59,7 @@ public class SeatScreen extends JFrame {
         }
         mainPanel.add(seatPanel);
 
+        
         reservationButton = new JButton("좌석 선택");
         reservationButton.setSize(100, 50);
         reservationButton.setLocation(670, 550);

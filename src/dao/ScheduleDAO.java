@@ -12,6 +12,21 @@ import model.Schedule;
 import util.DBConnection;
 
 public class ScheduleDAO {
+	
+	public List<String> getAllScheduleDate() throws SQLException {
+        List<String> theatersName = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT StartDate FROM schedules";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String theaterName = rs.getString("StartDate");
+            theatersName.add(theaterName);
+        }
+
+        return theatersName;
+    }
 
     public List<Schedule> getSchedulesByTheaterAndMovie(int theaterID, int movieID) throws SQLException {
         List<Schedule> schedules = new ArrayList<>();

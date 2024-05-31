@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.sql.SQLException;
@@ -19,9 +20,11 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import dao.MovieDAO;
+import dao.ScheduleDAO;
 import dao.SeatDAO;
 import dao.TheaterDAO;
 import model.Movie;
+import model.Schedule;
 import model.Theater;
 import model.Ticket;
 
@@ -33,6 +36,7 @@ public class BookingScreen extends JFrame {
     private TheaterDAO theaterDAO = new TheaterDAO();
     private SeatDAO seatDAO = new SeatDAO();
     private MovieDAO movieDAO = new MovieDAO();
+    private ScheduleDAO scheduleDAO = new ScheduleDAO();
     
     private JPanel mainPanel = new JPanel();
 	private JPanel mNorthPanel = new JPanel();
@@ -107,6 +111,18 @@ public class BookingScreen extends JFrame {
 			listModel2.addElement(theaterName);
 		}
 		theatherlist = new JList<>(listModel2);
+	}
+	
+	private List<String> startDates;
+	private DefaultListModel<String> listModel3 = new DefaultListModel<>();
+	private JList dateList;
+	
+	public void loadSchedule() throws SQLException {
+		startDates = scheduleDAO.getAllScheduleDate();
+		for(String startDate : startDates) {
+			listModel3.addElement(startDate);
+		}
+		dateList = new JList<>(listModel3);
 	}
 	
 
@@ -217,6 +233,8 @@ public class BookingScreen extends JFrame {
 			e.printStackTrace();
 		}
 		movielist.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
+		movielist.setBounds(12, 35, 122, 281);
+		mCenterMoviePanel.add(movielist);
 		
 		try {
 			loadTheaters();
@@ -225,30 +243,39 @@ public class BookingScreen extends JFrame {
 			e.printStackTrace();
 		}
 		theatherlist.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		movielist.setBounds(12, 35, 122, 281);
 		theatherlist.setBounds(12, 35, 122, 280);
-		mCenterMoviePanel.add(movielist);
 
 		choiceMovieLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
 		choiceMovieLabel.setBounds(37, 10, 76, 15);
 		mCenterMoviePanel.add(choiceMovieLabel);
+		
 		mCenterTheatherPanel.setBounds(182, 10, 158, 325);
 		mCenterTheatherPanel.setLayout(null);
 		mCenterTheatherPanel.add(theatherlist);
 
 		mCenterPanel.add(mCenterTheatherPanel);
 		choiceTheaterLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		choiceTheaterLabel.setBounds(40, 10, 70, 15);
+		choiceTheaterLabel.setBounds(37, 10, 76, 15);
+		
+		try {
+			loadSchedule();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		dateList.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
+		dateList.setBounds(12, 35, 122, 280);
+		
 		mCenterTheatherPanel.add(choiceTheaterLabel);
-		mCenterCalendarPanel.setBounds(352, 10, 221, 325);
+		mCenterCalendarPanel.setBounds(352, 10, 158, 325);
 		mCenterCalendarPanel.setLayout(null);
+		mCenterCalendarPanel.add(dateList);
+		
 		mCenterPanel.add(mCenterCalendarPanel);
 		choiceCalendarLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		choiceCalendarLabel.setBounds(81, 10, 76, 15);
+		choiceCalendarLabel.setBounds(37, 10, 76, 15);
 		mCenterCalendarPanel.add(choiceCalendarLabel);
-		mCenerButtomPanel.setBounds(0, 345, 573, 199);
-		mCenerButtomPanel.setLayout(null);
-		mCenterPanel.add(mCenerButtomPanel);
+		
 
 		adultCount.add(one);
 		adultCount.add(two);
@@ -262,6 +289,7 @@ public class BookingScreen extends JFrame {
 		teenagerCount.add(fourT);
 		teenagerCount.add(fiveT);
 		teenagerCount.add(zeroT);
+		
 		one.setFont(new Font("Dialog", Font.BOLD, 9));
 		one.setBounds(342, 72, 31, 29);
 		mCenerButtomPanel.add(one);

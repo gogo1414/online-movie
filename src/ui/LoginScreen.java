@@ -113,7 +113,8 @@ public class LoginScreen extends JFrame {
             if (customer != null) {
                 JOptionPane.showMessageDialog(this, "Login Successful!");
                 AllMovieInfo.customer=customer;
-                new MainMenuScreen(customer).setVisible(true);
+                if(userOrAdmin.equals("User")) new MainMenuScreen(customer).setVisible(true);
+                else new AdminPanel().setVisible(true);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);

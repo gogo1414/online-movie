@@ -27,6 +27,21 @@ public class ScheduleDAO {
 
         return theatersName;
     }
+	
+	public List<String> getAllScheduleTime() throws SQLException {
+        List<String> theatersName = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT StartTime FROM schedules";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String theaterName = rs.getString("StartTime");
+            theatersName.add(theaterName);
+        }
+
+        return theatersName;
+    }
 
     public List<Schedule> getSchedulesByTheaterAndMovie(int theaterID, int movieID) throws SQLException {
         List<Schedule> schedules = new ArrayList<>();

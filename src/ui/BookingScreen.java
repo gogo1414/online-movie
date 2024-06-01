@@ -1,23 +1,12 @@
 package ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import dao.MovieDAO;
 import dao.ScheduleDAO;
@@ -25,390 +14,293 @@ import dao.SeatDAO;
 import dao.TheaterDAO;
 import model.AllMovieInfo;
 import model.Movie;
-import model.Schedule;
-import model.Theater;
-import model.Ticket;
 
 public class BookingScreen extends JFrame {
-    private Movie movie;
-    private Ticket ticket;
-    private Theater theater;
-    
+
     private TheaterDAO theaterDAO = new TheaterDAO();
     private SeatDAO seatDAO = new SeatDAO();
     private MovieDAO movieDAO = new MovieDAO();
     private ScheduleDAO scheduleDAO = new ScheduleDAO();
-    
+
     private JPanel mainPanel = new JPanel();
-	private JPanel mNorthPanel = new JPanel();
-	private JPanel mCenterPanel = new JPanel();
-	private JPanel mEastPanel = new JPanel();
-    
-    private JPanel mCenterMoviePanel = new JPanel();
-	private JPanel mEastSouthPanel = new JPanel();
-	private JPanel mEastSouthCenterPanel = new JPanel();
-	private JPanel mCenterTheatherPanel = new JPanel();
-	private JPanel mCenterCalendarPanel = new JPanel();
-	private JPanel mCenerButtomPanel = new JPanel();
-	private JPanel roomPanel = new JPanel();
-	
-	private JLabel theatherLabel = new JLabel("-");
-	private JLabel dayLabel = new JLabel("-");
-	private JLabel personLabel = new JLabel("-");
-	private JLabel costLabel = new JLabel("-");
-	private JLabel choiceMovieLabel = new JLabel("영화 선택");
-	
-	private JLabel choiceTheaterLabel = new JLabel("극장 선택");
-	private JLabel choiceCalendarLabel = new JLabel("날짜 선택");
+    private JPanel movieSelectPanel = new JPanel();
+    private JPanel theaterSelectPanel = new JPanel();
+    private JPanel dateSelectPanel = new JPanel();
+    private JPanel timeSelectPanel = new JPanel();
+    private JPanel reservationPanel = new JPanel();
 
-	private ButtonGroup adultCount = new ButtonGroup();
-	private ButtonGroup teenagerCount = new ButtonGroup();
+    private List<String> movies;
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
+    private JList<String> movielist;
 
-	private JRadioButton one = new JRadioButton("1");
-	private JRadioButton two = new JRadioButton("2");
-	private JRadioButton three = new JRadioButton("3");
-	private JRadioButton four = new JRadioButton("4");
-	private JRadioButton five = new JRadioButton("5");
-	private JRadioButton zero = new JRadioButton("0");
-	
-	private JRadioButton oneT = new JRadioButton("1");
-	private JRadioButton twoT = new JRadioButton("2");
-	private JRadioButton threeT = new JRadioButton("3");
-	private JRadioButton fourT = new JRadioButton("4");
-	private JRadioButton fiveT = new JRadioButton("5");
-	private JRadioButton zeroT = new JRadioButton("0");
-	
-	private JButton ticketingButton = new JButton("예매하기");
-	
-	//관 정보
-	private JLabel roomNumber1 = new JLabel("");
-	private ButtonGroup timeGroup= new ButtonGroup();
-	private JRadioButton timeButton1 = new JRadioButton("9:00~");
-	private JRadioButton timeButton2 = new JRadioButton("12:00~");
-	private JRadioButton timeButton3 = new JRadioButton("15:00~");
-	private JRadioButton timeButton4 = new JRadioButton("18:00~");
-	private JRadioButton timeButton5 = new JRadioButton("21:00~");
-	//여기 관련 내용을 Database에서 꺼내게 바꾼다. 
-	
-	private List<String> movies;
-	private DefaultListModel<String> listModel = new DefaultListModel<>();
-	private JList movielist;
-	private JButton backButton = new JButton("Back");
-	
-	public void loadMovies() throws SQLException {
-		movies = movieDAO.getAllMoviesName();
-		for(String movieName : movies) {
-			listModel.addElement(movieName);
-		}
-		movielist = new JList<>(listModel);
-	}
-	
-	private List<String> theathers;
-	private DefaultListModel<String> listModel2 = new DefaultListModel<>();
-	private JList theatherlist;
-	
-	public void loadTheaters() throws SQLException {
-		theathers = theaterDAO.getAllTheatersName();
-		for(String theaterName : theathers) {
-			listModel2.addElement(theaterName);
-		}
-		theatherlist = new JList<>(listModel2);
-	}
-	
-	private List<String> startDates;
-	private DefaultListModel<String> listModel3 = new DefaultListModel<>();
-	private JList dateList;
-	
-	public void loadSchedule() throws SQLException {
-		startDates = scheduleDAO.getAllScheduleDate();
-		for(String startDate : startDates) {
-			listModel3.addElement(startDate);
-		}
-		dateList = new JList<>(listModel3);
-	}
-	
+    private List<String> theaters;
+    private DefaultListModel<String> listModel2 = new DefaultListModel<>();
+    private JList<String> theaterlist;
 
-	//check 관련
-	private String movieName ="";
-	private String theatherName ="";
-	private String checkDay; 
-	private int roomNumber;  //관정보  
-	private int time; //회차 정보 
-	
-	private static final int ADULTCOST = 10000;
-	private static final int TEENAGECOST = 8000;
-	
-	// 가격
-	private int totalCost = 0;
-	private int adultCost = 0;
-	private int teenagerCost = 0;
-	private int person = 0;
+    private List<String> startDates;
+    private DefaultListModel<String> listModel3 = new DefaultListModel<>();
+    private JList<String> datelist;
 
-    public BookingScreen(Movie movie) {
-        this.movie = movie;
-        theaterDAO = new TheaterDAO();
-        seatDAO = new SeatDAO();
+    private List<String> startTimes;
+    private DefaultListModel<String> listModel4 = new DefaultListModel<>();
+    private JList<String> timelist;
 
-        setTitle("티켓 예메");
-		setSize(900, 700);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLocationRelativeTo(null); // 화면 가운데 출력시키기
-		setResizable(false);
-		setVisible(true);
-		getContentPane().setLayout(null);
-		mainPanel.setBounds(13, 0, 799, 583);
-		
+    private JLabel movieLabel = new JLabel("영화 : ");
+    private JLabel theaterLabel = new JLabel("극장 : ");
+    private JLabel dateLabel = new JLabel("날짜 : ");
+    private JLabel timeLabel = new JLabel("시간 : ");
 
-		// main
-		getContentPane().add(mainPanel);
-		mainPanel.setLayout(null);
-		mNorthPanel.setBounds(0, 0, 799, 28);
-		
+    private JButton reservationButton = new JButton("예약하기");
+    private JButton backButton = new JButton("Back");
 
-		mainPanel.add(mNorthPanel);
-		mNorthPanel.setLayout(null);
-		JLabel nameLabel = new JLabel(MainMenuScreen.customer.getName() + " 고객님 예매");
-		nameLabel.setBounds(5, 5, 789, 18);
-		nameLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
-		nameLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-		nameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-		nameLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 15));
-		mNorthPanel.add(nameLabel);
-		
-		
-		mEastPanel.setBounds(598, 38, 189, 600);
-		mainPanel.add(mEastPanel);
-		
-		mEastPanel.setLayout(null);
-		mEastSouthPanel.setBounds(0, 390, 178, 155);
-		
-		
-		mEastPanel.add(mEastSouthPanel);
-		
-		mEastSouthPanel.setLayout(new BorderLayout(0, 0));
-		JLabel blank_5 = new JLabel(" ");
-		JLabel blank_6 = new JLabel(" ");
-		JLabel blank_7 = new JLabel(" ");
-		JLabel blank_8 = new JLabel(" ");
-		mEastSouthPanel.add(blank_5, BorderLayout.NORTH);
-		mEastSouthPanel.add(blank_6, BorderLayout.SOUTH);
-		mEastSouthPanel.add(blank_7, BorderLayout.WEST);
-		mEastSouthPanel.add(blank_8, BorderLayout.EAST);
-		mEastSouthPanel.add(mEastSouthCenterPanel, BorderLayout.CENTER);
-		mEastSouthPanel.add(backButton,BorderLayout.SOUTH);
-		mEastSouthCenterPanel.setLayout(new GridLayout(5, 2));
-		backButton.addActionListener(e->{
-			
-			new MovieDetailsScreen(AllMovieInfo.movie).setVisible(true);
-			dispose();
-		});
-		
-		ticketingButton.addActionListener(e->{
-			new SeatScreen().setVisible(true);
-			dispose();
-		});
-		
-		
-		
-		JLabel lblNewLabel_1_1 = new JLabel("\uADF9\uC7A5 :");
-		JLabel lblNewLabel_5 = new JLabel("\uC778\uC6D0 :");
-		JLabel lblNewLabel_7 = new JLabel("금액 :");
-		JLabel lblNewLabel_9 = new JLabel("");
-		
+    public BookingScreen() throws SQLException {
 
-		lblNewLabel_1_1.setFont(new Font("휴먼엑스포", Font.PLAIN, 14));
-		mEastSouthCenterPanel.add(lblNewLabel_1_1);
-		theatherLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 10));
-		mEastSouthCenterPanel.add(theatherLabel);
-		JLabel lblNewLabel_3_1 = new JLabel("\uB0A0\uC9DC :");
-		lblNewLabel_3_1.setFont(new Font("휴먼엑스포", Font.PLAIN, 14));
-		mEastSouthCenterPanel.add(lblNewLabel_3_1);
-		dayLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 10));
-		mEastSouthCenterPanel.add(dayLabel);
-		lblNewLabel_5.setFont(new Font("휴먼엑스포", Font.PLAIN, 14));
-		mEastSouthCenterPanel.add(lblNewLabel_5);
-		personLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 10));
-		mEastSouthCenterPanel.add(personLabel);
-		lblNewLabel_7.setFont(new Font("휴먼엑스포", Font.PLAIN, 14));
-		mEastSouthCenterPanel.add(lblNewLabel_7);
-		costLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 10));
-		mEastSouthCenterPanel.add(costLabel);
-		mEastSouthCenterPanel.add(lblNewLabel_9);
-		ticketingButton.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		mEastSouthCenterPanel.add(ticketingButton);
-		mCenterPanel.setBounds(0, 38, 586, 545);
+        setTitle("티켓 예매");
+        setSize(1000, 1000);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
 
-		mainPanel.add(mCenterPanel);
-		mCenterPanel.setLayout(null);
-		mCenterMoviePanel.setBounds(12, 10, 158, 325);
-		// 영화 선택
-		mCenterMoviePanel.setLayout(null);
-		mCenterPanel.add(mCenterMoviePanel);
-		
-		try {
-			loadMovies();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		movielist.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		movielist.setBounds(12, 35, 122, 281);
-		mCenterMoviePanel.add(movielist);
-		
-		try {
-			loadTheaters();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		theatherlist.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		theatherlist.setBounds(12, 35, 122, 280);
+        mainPanel.setLayout(null);
 
-		choiceMovieLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		choiceMovieLabel.setBounds(37, 10, 76, 15);
-		mCenterMoviePanel.add(choiceMovieLabel);
-		
-		mCenterTheatherPanel.setBounds(182, 10, 158, 325);
-		mCenterTheatherPanel.setLayout(null);
-		mCenterTheatherPanel.add(theatherlist);
+        // *******영화 선택 패널********
+        makePanel(50, 100, 150, 400, "movieSelectPanel");
 
-		mCenterPanel.add(mCenterTheatherPanel);
-		choiceTheaterLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		choiceTheaterLabel.setBounds(37, 10, 76, 15);
-		
-		try {
-			loadSchedule();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		dateList.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		dateList.setBounds(12, 35, 122, 280);
-		
-		mCenterTheatherPanel.add(choiceTheaterLabel);
-		mCenterCalendarPanel.setBounds(352, 10, 158, 325);
-		mCenterCalendarPanel.setLayout(null);
-		mCenterCalendarPanel.add(dateList);
-		
-		mCenterPanel.add(mCenterCalendarPanel);
-		choiceCalendarLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 13));
-		choiceCalendarLabel.setBounds(37, 10, 76, 15);
-		mCenterCalendarPanel.add(choiceCalendarLabel);
-		
+        // *********극장 선택 패널********
+        makePanel(250, 100, 150, 400, "theaterSelectPanel");
 
-		adultCount.add(one);
-		adultCount.add(two);
-		adultCount.add(three);
-		adultCount.add(four);
-		adultCount.add(five);
-		adultCount.add(zero);
-		teenagerCount.add(oneT);
-		teenagerCount.add(twoT);
-		teenagerCount.add(threeT);
-		teenagerCount.add(fourT);
-		teenagerCount.add(fiveT);
-		teenagerCount.add(zeroT);
-		
-		one.setFont(new Font("Dialog", Font.BOLD, 9));
-		one.setBounds(342, 72, 31, 29);
-		mCenerButtomPanel.add(one);
-		two.setFont(new Font("Dialog", Font.BOLD, 9));
-		two.setBounds(377, 72, 31, 29);
-		mCenerButtomPanel.add(two);
-		three.setFont(new Font("Dialog", Font.BOLD, 9));
-		three.setBounds(412, 72, 31, 29);
-		mCenerButtomPanel.add(three);
-		four.setFont(new Font("Dialog", Font.BOLD, 9));
-		four.setBounds(447, 72, 31, 29);
-		mCenerButtomPanel.add(four);
-		five.setFont(new Font("Dialog", Font.BOLD, 9));
-		five.setBounds(482, 72, 31, 29);
-		mCenerButtomPanel.add(five);
-		zero.setFont(new Font("Dialog", Font.BOLD, 9));
-		zero.setBounds(517, 72, 31, 29);
-		mCenerButtomPanel.add(zero);
-		
-		oneT.setFont(new Font("Dialog", Font.BOLD, 9));
-		oneT.setBounds(342, 137, 31, 29);
-		mCenerButtomPanel.add(oneT);
-		twoT.setFont(new Font("굴림", Font.BOLD, 9));
-		twoT.setBounds(377, 137, 31, 29);
-		mCenerButtomPanel.add(twoT);
-		threeT.setFont(new Font("굴림", Font.BOLD, 9));
-		threeT.setBounds(412, 137, 31, 29);
-		mCenerButtomPanel.add(threeT);
-		fourT.setFont(new Font("굴림", Font.BOLD, 9));
-		fourT.setBounds(447, 137, 31, 29);
-		mCenerButtomPanel.add(fourT);
-		fiveT.setFont(new Font("굴림", Font.BOLD, 9));
-		fiveT.setBounds(482, 137, 31, 29);
-		mCenerButtomPanel.add(fiveT);
-		zeroT.setFont(new Font("Dialog", Font.BOLD, 9));
-		zeroT.setBounds(517, 137, 31, 29);
-		mCenerButtomPanel.add(zeroT);
+        // **********날짜 선택 패널 *******
+        makePanel(450, 100, 150, 400, "dateSelectPanel");
 
-		JLabel timeTableLabel = new JLabel("\uC0C1\uC601\uC2DC\uAC04\uD45C");
-		timeTableLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 15));
-		timeTableLabel.setBounds(12, 10, 108, 23);
-		mCenerButtomPanel.add(timeTableLabel);
+        // ********상영 시간 선택 패널 *******
+        makePanel(650, 100, 150, 400, "timeSelectPanel");
 
-		JLabel headCountLabel = new JLabel("\uC778\uC6D0\uC120\uD0DD");
-		headCountLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 15));
-		headCountLabel.setBounds(342, 10, 121, 29);
-		mCenerButtomPanel.add(headCountLabel);
+        // ******최종 예약 패널**********
+        makePanel(650, 700, 200, 200, "reservationPanel");
 
-		JLabel adultLabel = new JLabel("성인 (10,000 원)");
-		adultLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 12));
-		adultLabel.setBounds(342, 54, 121, 15);
-		mCenerButtomPanel.add(adultLabel);
+        //*******backButton********
+        backButton.setBounds(50, 800, 100, 70);
+        mainPanel.add(backButton);
+        backButton.addActionListener(e -> {
+            new MovieDetailsScreen(AllMovieInfo.movie).setVisible(true);
+            dispose();
+        });
 
-		JLabel teenagerLabel = new JLabel("청소년 (8,000 원)");
-		teenagerLabel.setFont(new Font("휴먼엑스포", Font.PLAIN, 12));
-		teenagerLabel.setBounds(342, 116, 121, 15);
-		mCenerButtomPanel.add(teenagerLabel);
-		backButton.setBounds(500,30,100,100);
-		
-		//관 gui
-		roomPanel.setBounds(12, 30, 322, 159);
-		mCenerButtomPanel.add(roomPanel);
-		roomPanel.setLayout(null);
-		
-		roomNumber1.setBounds(12, 10, 57, 15);
-		roomPanel.add(roomNumber1);
-		timeButton1.setFont(new Font("굴림", Font.PLAIN, 10));
-		
-		timeButton1.setBounds(8, 36, 99, 23);
-		roomPanel.add(timeButton1);
-		timeButton2.setFont(new Font("굴림", Font.PLAIN, 10));
-		timeButton2.setBounds(113, 36, 99, 23);
-		roomPanel.add(timeButton2);
-		timeButton3.setFont(new Font("굴림", Font.PLAIN, 10));
-		
-		timeButton3.setBounds(215, 36, 99, 23);
-		roomPanel.add(timeButton3);
-		timeButton4.setFont(new Font("굴림", Font.PLAIN, 10));
-		
-		timeButton4.setBounds(8, 61, 99, 23);
-		roomPanel.add(timeButton4);
-		timeButton5.setFont(new Font("굴림", Font.PLAIN, 10));
-		
-		timeButton5.setBounds(113, 61, 99, 23);
-		roomPanel.add(timeButton5);
-		
-		timeGroup.add(timeButton1);
-		timeGroup.add(timeButton2);
-		timeGroup.add(timeButton3);
-		timeGroup.add(timeButton4);
-		timeGroup.add(timeButton5);
+        add(mainPanel);
+    }
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    private void showDBList(String name) throws SQLException {
+        if (name.equals("movieSelectPanel")) {
+            loadMovies();
+            JScrollPane scrollPane = new JScrollPane(movielist);
+            scrollPane.setBounds(5, 5, 145, 395);
+            movieSelectPanel.add(scrollPane);
+            movielist.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        String selectedMovie = movielist.getSelectedValue();
+                        if (selectedMovie != null) {
+                            movieLabel.setText("영화 : " + selectedMovie);
+                            theaterLabel.setText("극장 : ");
+                            dateLabel.setText("날짜 : ");
+                            timeLabel.setText("시간 : ");
+                            theaterlist.clearSelection();
+                            datelist.clearSelection();
+                            timelist.clearSelection();
+                        }
+                    }
+                }
+            });
+
+        } else if (name.equals("theaterSelectPanel")) {
+            loadTheaters();
+            JScrollPane scrollPane = new JScrollPane(theaterlist);
+            scrollPane.setBounds(5, 5, 145, 395);
+            theaterSelectPanel.add(scrollPane);
+            theaterlist.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        String selectedTheater = theaterlist.getSelectedValue();
+                        if (selectedTheater != null) {
+                            theaterLabel.setText("극장 : " + selectedTheater);
+                            dateLabel.setText("날짜 : ");
+                            timeLabel.setText("시간 : ");
+                            datelist.clearSelection();
+                            timelist.clearSelection();
+                        }
+                    }
+                }
+            });
+
+        } else if (name.equals("dateSelectPanel")) {
+            loadStartDate();
+            JScrollPane scrollPane = new JScrollPane(datelist);
+            scrollPane.setBounds(5, 5, 145, 395);
+            dateSelectPanel.add(scrollPane);
+            datelist.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        String selectedDate = datelist.getSelectedValue();
+                        if (selectedDate != null) {
+                            dateLabel.setText("날짜 : " + selectedDate);
+                            timeLabel.setText("시간 : ");
+                            timelist.clearSelection();
+                        }
+                    }
+                }
+            });
+        } else if (name.equals("timeSelectPanel")) {
+            loadStartTime();
+            JScrollPane scrollPane = new JScrollPane(timelist);
+            scrollPane.setBounds(5, 5, 145, 395);
+            timeSelectPanel.add(scrollPane);
+            timelist.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        String selectedTime = timelist.getSelectedValue();
+                        if (selectedTime != null) {
+                            timeLabel.setText("시간 : " + selectedTime);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void makePanel(int x, int y, int w, int h, String panelName) throws SQLException {
+        if (panelName.equals("movieSelectPanel")) {
+            movieSelectPanel.setBounds(x, y, w, h);
+            movieSelectPanel.setBackground(Color.white);
+            movieSelectPanel.setLayout(null);
+
+            JLabel label = new JLabel("영화 선택");
+            label.setBounds(x + 30, y - 30, 100, 30);
+            label.setFont(label.getFont().deriveFont(20.0f));
+            mainPanel.add(label);
+
+            showDBList(panelName);
+
+            mainPanel.add(movieSelectPanel);
+
+        } else if (panelName.equals("theaterSelectPanel")) {
+            theaterSelectPanel.setBounds(x, y, w, h);
+            theaterSelectPanel.setBackground(Color.white);
+            theaterSelectPanel.setLayout(null);
+
+            JLabel label = new JLabel("극장 선택");
+            label.setBounds(x + 30, y - 30, 100, 30);
+            label.setFont(label.getFont().deriveFont(20.0f));
+            mainPanel.add(label);
+
+            showDBList(panelName);
+
+            mainPanel.add(theaterSelectPanel);
+        } else if (panelName.equals("dateSelectPanel")) {
+            dateSelectPanel.setBounds(x, y, w, h);
+            dateSelectPanel.setBackground(Color.white);
+            dateSelectPanel.setLayout(null);
+
+            JLabel label = new JLabel("개봉 날짜");
+            label.setBounds(x + 30, y - 30, 100, 30);
+            label.setFont(label.getFont().deriveFont(20.0f));
+            mainPanel.add(label);
+
+            showDBList(panelName);
+
+            mainPanel.add(dateSelectPanel);
+        } else if (panelName.equals("timeSelectPanel")) {
+            timeSelectPanel.setBounds(x, y, w, h);
+            timeSelectPanel.setBackground(Color.white);
+            timeSelectPanel.setLayout(null);
+
+            JLabel label = new JLabel("상영 시간");
+            label.setBounds(x + 30, y - 30, 100, 30);
+            label.setFont(label.getFont().deriveFont(20.0f));
+            mainPanel.add(label);
+
+            showDBList(panelName);
+
+            mainPanel.add(timeSelectPanel);
+        } else if (panelName.equals("reservationPanel")) {
+            reservationPanel.setBounds(x, y, w, h);
+            reservationPanel.setBackground(Color.white);
+            reservationPanel.setLayout(null);
+
+            makeReservationInfo();
+
+            mainPanel.add(reservationPanel);
+        }
+    }
+
+    private void makeReservationInfo() {
+
+        movieLabel.setBounds(0, 0, 180, 40);
+        theaterLabel.setBounds(0, 40, 180, 40);
+        dateLabel.setBounds(0, 80, 180, 40);
+        timeLabel.setBounds(0, 120, 180, 40);
+        reservationButton.setBounds(20, 160, 180, 40);
+
+        reservationPanel.add(movieLabel);
+        reservationPanel.add(theaterLabel);
+        reservationPanel.add(dateLabel);
+        reservationPanel.add(timeLabel);
+        reservationPanel.add(reservationButton);
+
+        reservationButton.addActionListener(e -> {
+            if (movieLabel.getText().equals("영화 : ") || 
+                theaterLabel.getText().equals("극장 : ") || 
+                dateLabel.getText().equals("날짜 : ") || 
+                timeLabel.getText().equals("시간 : ")) {
+                JOptionPane.showMessageDialog(this, "모든 항목을 선택해야 합니다.", "경고", JOptionPane.WARNING_MESSAGE);
+            } else {
+                new SeatScreen().setVisible(true);
+                dispose();
+            }
+        });
+
+    }
+
+    public void loadMovies() throws SQLException {
+        movies = movieDAO.getAllMoviesName();
+        for (String movieName : movies) {
+            listModel.addElement(movieName);
+        }
+        movielist = new JList<>(listModel);
+    }
+
+    public void loadTheaters() throws SQLException {
+        theaters = theaterDAO.getAllTheatersName();
+        for (String theaterName : theaters) {
+            listModel2.addElement(theaterName);
+        }
+        theaterlist = new JList<>(listModel2);
+    }
+
+    public void loadStartDate() throws SQLException {
+        startDates = scheduleDAO.getAllScheduleDate();
+        for (String startDate : startDates) {
+            listModel3.addElement(startDate);
+        }
+        datelist = new JList<>(listModel3);
+    }
+
+    public void loadStartTime() throws SQLException {
+        startTimes = scheduleDAO.getAllScheduleTime();
+        for (String startTime : startTimes) {
+            listModel4.addElement(startTime);
+        }
+        timelist = new JList<>(listModel4);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new BookingScreen(null).setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new BookingScreen().setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
     }

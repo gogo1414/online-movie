@@ -94,23 +94,6 @@ public class MovieDAO {
         stmt.executeUpdate();
     }
 
-    public void updateMovie(Movie movie) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE movies SET Title = ?, Duration = ?, Rating = ?, Director = ?, Actors = ?, Genre = ?, Story = ?, ReleaseDate = ?, Score = ? WHERE MovieID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, movie.getTitle());
-        stmt.setString(2, movie.getDuration());
-        stmt.setString(3, movie.getRating());
-        stmt.setString(4, movie.getDirector());
-        stmt.setString(5, movie.getActors());
-        stmt.setString(6, movie.getGenre());
-        stmt.setString(7, movie.getStory());
-        stmt.setDate(8, new java.sql.Date(movie.getReleaseDate().getTime()));
-        stmt.setInt(9, movie.getScore());
-        stmt.setInt(10, movie.getMovieID());
-        stmt.executeUpdate();
-    }
-
     public void deleteMovie(int movieID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM movies WHERE MovieID = ?";

@@ -89,34 +89,6 @@ public class ScheduleDAO {
         return schedule;
     }
 
-    public void addSchedule(Schedule schedule) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "INSERT INTO schedules (ScheduleID, MovieID, TheaterID, StartDate, Weekday, ShowNumber, StartTime) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, schedule.getScheduleID());
-        stmt.setInt(2, schedule.getMovieID());
-        stmt.setInt(3, schedule.getTheaterID());
-        stmt.setDate(4, new java.sql.Date(schedule.getStartDate().getTime()));
-        stmt.setString(5, schedule.getWeekday());
-        stmt.setInt(6, schedule.getShowNumber());
-        stmt.setTime(7, schedule.getStartTime());
-        stmt.executeUpdate();
-    }
-
-    public void updateSchedule(Schedule schedule) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE schedules SET MovieID = ?, TheaterID = ?, StartDate = ?, Weekday = ?, ShowNumber = ?, StartTime = ? WHERE ScheduleID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, schedule.getMovieID());
-        stmt.setInt(2, schedule.getTheaterID());
-        stmt.setDate(3, new java.sql.Date(schedule.getStartDate().getTime()));
-        stmt.setString(4, schedule.getWeekday());
-        stmt.setInt(5, schedule.getShowNumber());
-        stmt.setTime(6, schedule.getStartTime());
-        stmt.setInt(7, schedule.getScheduleID());
-        stmt.executeUpdate();
-    }
-
     public void deleteSchedule(int scheduleID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM schedules WHERE ScheduleID = ?";

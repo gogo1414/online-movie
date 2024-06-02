@@ -71,21 +71,6 @@ public class TicketDAO {
         stmt.executeUpdate();
     }
 
-    public void updateTicket(Ticket ticket) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE tickets SET ScheduleID = ?, TheaterID = ?, SeatID = ?, BookingID = ?, IsIssued = ?, StandardPrice = ?, SalePrice = ? WHERE TicketID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, ticket.getScheduleID());
-        stmt.setInt(2, ticket.getTheaterID());
-        stmt.setString(3, ticket.getSeatID());
-        stmt.setInt(4, ticket.getBookingID());
-        stmt.setBoolean(5, ticket.isIssued());
-        stmt.setInt(6, ticket.getStandardPrice());
-        stmt.setInt(7, ticket.getSalePrice());
-        stmt.setInt(8, ticket.getTicketID());
-        stmt.executeUpdate();
-    }
-
     public void deleteTicket(int ticketID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM tickets WHERE TicketID = ?";

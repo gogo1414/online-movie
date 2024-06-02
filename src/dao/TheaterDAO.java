@@ -81,20 +81,7 @@ public class TheaterDAO {
         stmt.setInt(6, theater.getHeight());
         stmt.executeUpdate();
     }
-
-    public void updateTheater(Theater theater) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE theaters SET SeatCount = ?, IsActive = ?, TheaterName = ?, Width = ?, Height = ? WHERE TheaterID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, theater.getSeatCount());
-        stmt.setBoolean(2, theater.isActive());
-        stmt.setString(3, theater.getTheaterName());
-        stmt.setBoolean(4, theater.isActive());
-        stmt.setInt(5, theater.getWidth());
-        stmt.setInt(6, theater.getHeight());
-        stmt.executeUpdate();
-    }
-
+    
     public void deleteTheater(int theaterID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM theaters WHERE TheaterID = ?";

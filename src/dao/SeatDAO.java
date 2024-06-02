@@ -59,15 +59,6 @@ public class SeatDAO {
         stmt.executeUpdate();
     }
 
-    public void updateSeat(Seat seat) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE seats SET TheaterID = ?, IsOccupied = ? WHERE SeatID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, seat.getTheaterID());
-        stmt.setBoolean(2, seat.isOccupied());
-        stmt.setString(3, seat.getSeatID());
-        stmt.executeUpdate();
-    }
 
     public void deleteSeat(String seatID) throws SQLException {
         Connection conn = DBConnection.getConnection();

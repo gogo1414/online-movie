@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +23,8 @@ import dao.ScheduleDAO;
 import dao.TicketDAO;
 import model.Booking;
 import model.Customer;
+import model.Movie;
+import model.Ticket;
 
 public class BookingHistoryScreen extends JFrame {
     private Customer customer;
@@ -116,7 +117,9 @@ public class BookingHistoryScreen extends JFrame {
             List<Booking> bookings = bookingDAO.getBookingsByCustomer(MainMenuScreen.customer.getCustomerID());
             for (Booking booking : bookings) {
                 // For simplicity, assuming bookingID as a string with format "BookingID: MovieTitle"
-                listModel.addElement(booking.getBookingID() + ": " + "Movie Title Placeholder");
+            	Ticket ticket = ticketDAO.getTicketByBookingID(booking.getBookingID());
+            	Movie movie = movieDAO.getMovieByID(ticket.getBookingID());
+                listModel.addElement(booking.getBookingID() + ": " + movie.getTitle());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -24,7 +24,7 @@ public class SeatScreen extends JFrame {
 
     private char[] rows = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
     private int[] cols = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
+    
     private Set<JButton> selectedSeats;
     private JPanel mainPanel;
     private JPanel seatPanel;

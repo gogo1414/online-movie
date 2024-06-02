@@ -75,7 +75,7 @@ public class BookingScreen extends JFrame {
         makePanel(650, 100, 150, 400, "timeSelectPanel");
 
         // ******최종 예약 패널**********
-        makePanel(650, 700, 200, 200, "reservationPanel");
+        makePanel(650, 550, 200, 200, "reservationPanel");
 
         //*******backButton********
         backButton.setBounds(50, 800, 100, 70);
@@ -92,7 +92,7 @@ public class BookingScreen extends JFrame {
         if (name.equals("movieSelectPanel")) {
             loadMovies();
             JScrollPane scrollPane = new JScrollPane(movielist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             movieSelectPanel.add(scrollPane);
             movielist.addListSelectionListener(new ListSelectionListener() {
                 @Override
@@ -115,7 +115,7 @@ public class BookingScreen extends JFrame {
         } else if (name.equals("theaterSelectPanel")) {
             loadTheaters();
             JScrollPane scrollPane = new JScrollPane(theaterlist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             theaterSelectPanel.add(scrollPane);
             theaterlist.addListSelectionListener(new ListSelectionListener() {
                 @Override
@@ -136,7 +136,7 @@ public class BookingScreen extends JFrame {
         } else if (name.equals("dateSelectPanel")) {
             loadStartDate();
             JScrollPane scrollPane = new JScrollPane(datelist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             dateSelectPanel.add(scrollPane);
             datelist.addListSelectionListener(new ListSelectionListener() {
                 @Override
@@ -154,7 +154,7 @@ public class BookingScreen extends JFrame {
         } else if (name.equals("timeSelectPanel")) {
             loadStartTime();
             JScrollPane scrollPane = new JScrollPane(timelist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             timeSelectPanel.add(scrollPane);
             timelist.addListSelectionListener(new ListSelectionListener() {
                 @Override
@@ -237,11 +237,11 @@ public class BookingScreen extends JFrame {
 
     private void makeReservationInfo() {
 
-        movieLabel.setBounds(0, 0, 180, 40);
-        theaterLabel.setBounds(0, 40, 180, 40);
-        dateLabel.setBounds(0, 80, 180, 40);
-        timeLabel.setBounds(0, 120, 180, 40);
-        reservationButton.setBounds(20, 160, 180, 40);
+        movieLabel.setBounds(5, 0, 180, 40);
+        theaterLabel.setBounds(5, 40, 180, 40);
+        dateLabel.setBounds(5, 80, 180, 40);
+        timeLabel.setBounds(5, 120, 180, 40);
+        reservationButton.setBounds(10, 160, 180, 40);
 
         reservationPanel.add(movieLabel);
         reservationPanel.add(theaterLabel);

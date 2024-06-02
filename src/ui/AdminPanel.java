@@ -18,7 +18,7 @@ public class AdminPanel extends JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        setTitle("관리자 패널");
+        setTitle("관리자 메뉴");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());

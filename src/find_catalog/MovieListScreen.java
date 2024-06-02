@@ -31,7 +31,7 @@ public class MovieListScreen extends JFrame {
     public MovieListScreen(String catalogue) {
     	this.catalogue = catalogue;
     	AllMovieInfo.catalog = catalogue;
-        setTitle("Movie List");
+        setTitle("영화 목록");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

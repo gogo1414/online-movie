@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 public class AdminOrUserScreen extends JFrame {
 	
     public AdminOrUserScreen() {
-        setTitle("Admin or User");
+        setTitle("로그인");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -23,14 +23,14 @@ public class AdminOrUserScreen extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JButton adminButton = new JButton("Admin");
+        JButton adminButton = new JButton("관리자");
         adminButton.addActionListener(e->{
         	new LoginScreen("Admin").setVisible(true);
         	dispose();
         });
         
 
-        JButton userButton = new JButton("User");
+        JButton userButton = new JButton("회원");
         userButton.addActionListener(e->{
         	new LoginScreen("User").setVisible(true);
         	dispose();

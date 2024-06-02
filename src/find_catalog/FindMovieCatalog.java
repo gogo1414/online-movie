@@ -19,7 +19,7 @@ public class FindMovieCatalog extends JFrame {
     private JButton backButton = new JButton("Back");
 
     public FindMovieCatalog() {
-        setTitle("Main Menu");
+        setTitle("영화 조회");
         setSize(500, 400); // 사이즈를 조금 더 키움
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

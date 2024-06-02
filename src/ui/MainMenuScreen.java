@@ -20,7 +20,7 @@ public class MainMenuScreen extends JFrame {
     public MainMenuScreen(Customer customer) {
         this.customer = customer;
 
-        setTitle("Main Menu");
+        setTitle("메인 메뉴");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

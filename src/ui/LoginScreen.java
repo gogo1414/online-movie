@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import dao.CustomerDAO;
 import model.AllMovieInfo;
+import model.AllMovieInfos;
 import model.Customer;
 
 
@@ -112,6 +113,7 @@ public class LoginScreen extends JFrame {
 
             if (customer != null) {
                 JOptionPane.showMessageDialog(this, "Login Successful!");
+             
                 AllMovieInfo.customer=customer;
                 if(userOrAdmin.equals("User")) new MainMenuScreen(customer).setVisible(true);
                 else new AdminPanel().setVisible(true);

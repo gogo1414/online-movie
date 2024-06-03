@@ -24,7 +24,7 @@ public class Theater {
     }
     
     public void setTheaterName(String theaterName) {
-    	this.setTheaterName(theaterName);
+    	this.theaterName = theaterName;
     }
 
     public int getTheaterID() {

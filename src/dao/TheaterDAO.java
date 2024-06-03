@@ -68,6 +68,26 @@ public class TheaterDAO {
 
         return theater;
     }
+    
+    public Theater getTheaterByName(String theaterName) throws SQLException {
+        Theater theater = null;
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM theaters WHERE TheaterName = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, theaterName);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            theater = new Theater();
+            theater.setTheaterID(rs.getInt("TheaterID"));
+            theater.setSeatCount(rs.getInt("SeatCount"));
+            theater.setTheaterName(rs.getString("TheaterName"));
+            theater.setActive(rs.getBoolean("IsActive"));
+            theater.setWidth(rs.getInt("Width"));
+            theater.setHeight(rs.getInt("Height"));
+        }
+
+        return theater;
+    }
 
     public void addTheater(Theater theater) throws SQLException {
         Connection conn = DBConnection.getConnection();

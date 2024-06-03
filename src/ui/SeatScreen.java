@@ -19,6 +19,7 @@ public class SeatScreen extends JFrame {
     private static final int ROW = 10;
     private static final int HEIGHT = 10;
     private static final int SEAT_PRICE = 10000;
+    private static final int TOTAL_SEATS = 255;
 
     private List<String> seatNumbers = new ArrayList<>();
 
@@ -35,7 +36,7 @@ public class SeatScreen extends JFrame {
     private JTextArea selectedSeatInfoArea;
     private JScrollPane scrollPane;
     private JLabel seatedCounterLabel = new JLabel("좌석 현황");
-    private JLabel seatedCounterLabel2 = new JLabel("147 / 255");
+    private JLabel seatedCounterLabel2 = new JLabel("255 / " + TOTAL_SEATS);
 
     private JLabel totalPeopleLabel;
     private JLabel totalPriceLabel;
@@ -136,11 +137,11 @@ public class SeatScreen extends JFrame {
         seatedCounterLabel2.setBounds(300, 540, 100, 100);
         mainPanel.add(seatedCounterLabel2);
 
-        totalPeopleLabel = new JLabel("Total People: 0");
+        totalPeopleLabel = new JLabel("총 인원: 0");
         totalPeopleLabel.setBounds(550, 540, 150, 30);
         mainPanel.add(totalPeopleLabel);
 
-        totalPriceLabel = new JLabel("Total Price: 0");
+        totalPriceLabel = new JLabel("총 가격: 0");
         totalPriceLabel.setBounds(550, 570, 150, 30);
         mainPanel.add(totalPriceLabel);
 
@@ -177,14 +178,15 @@ public class SeatScreen extends JFrame {
 
     private void updateSelectedSeatLabel() {
         if (seatNumbers.isEmpty()) {
-            selectedSeatInfoArea.setText("Selected Seats: None");
-            totalPeopleLabel.setText("Total People: 0");
-            totalPriceLabel.setText("Total Price: 0");
+            selectedSeatInfoArea.setText("선택된 좌석: None");
+            totalPeopleLabel.setText("총 인원: 0");
+            totalPriceLabel.setText("총 가격: 0");
         } else {
-            selectedSeatInfoArea.setText("Selected Seats:\n" + String.join("\n", seatNumbers));
-            totalPeopleLabel.setText("Total People: " + seatNumbers.size());
-            totalPriceLabel.setText("Total Price: " + (seatNumbers.size() * SEAT_PRICE));
+            selectedSeatInfoArea.setText("선택된 좌석:\n" + String.join("\n", seatNumbers));
+            totalPeopleLabel.setText("총 인원: " + seatNumbers.size());
+            totalPriceLabel.setText("총 가격: " + (seatNumbers.size() * SEAT_PRICE));
         }
+        seatedCounterLabel2.setText(TOTAL_SEATS - selectedSeats.size() + " / " + TOTAL_SEATS);
     }
 
     public static void main(String[] args) {

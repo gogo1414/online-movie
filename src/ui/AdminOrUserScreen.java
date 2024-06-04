@@ -28,7 +28,6 @@ public class AdminOrUserScreen extends JFrame {
         	new LoginScreen("Admin").setVisible(true);
         	dispose();
         });
-        
 
         JButton userButton = new JButton("회원");
         userButton.addActionListener(e->{

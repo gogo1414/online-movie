@@ -25,7 +25,7 @@ public class BookingDAO {
             Booking booking = new Booking();
             booking.setBookingID(rs.getInt("BookingID"));
             booking.setPaymentMethod(rs.getString("PaymentMethod"));
-            booking.setPaymentStatus(rs.getString("PaymentStatus"));
+            booking.setPaymentStatus(rs.getInt("PaymentStatus"));
             booking.setAmount(rs.getInt("Amount"));
             booking.setCustomerID(rs.getString("CustomerID"));
             booking.setPaymentDate(rs.getDate("PaymentDate"));
@@ -47,7 +47,7 @@ public class BookingDAO {
             booking = new Booking();
             booking.setBookingID(rs.getInt("BookingID"));
             booking.setPaymentMethod(rs.getString("PaymentMethod"));
-            booking.setPaymentStatus(rs.getString("PaymentStatus"));
+            booking.setPaymentStatus(rs.getInt("PaymentStatus"));
             booking.setAmount(rs.getInt("Amount"));
             booking.setCustomerID(rs.getString("CustomerID"));
             booking.setPaymentDate(rs.getDate("PaymentDate"));
@@ -61,7 +61,7 @@ public class BookingDAO {
         String query = "INSERT INTO bookings (PaymentMethod, PaymentStatus, Amount, CustomerID, PaymentDate) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, booking.getPaymentMethod());
-        stmt.setString(2, booking.getPaymentStatus());
+        stmt.setInt(2, booking.getPaymentStatus());
         stmt.setInt(3, booking.getAmount());
         stmt.setString(4, booking.getCustomerID());
         stmt.setDate(5, new java.sql.Date(booking.getPaymentDate().getTime()));

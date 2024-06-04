@@ -9,6 +9,14 @@ public class Theater {
     private int height;
 
     public Theater() {}
+    
+    public Theater(int seatCount, String theaterName, boolean isActive, int width, int height) {
+        this.seatCount = seatCount;
+        this.theaterName = theaterName;
+        this.isActive = isActive;
+        this.width = width;
+        this.height = height;
+    }
 
     public Theater(int theaterID, int seatCount, String theaterName, boolean isActive, int width, int height) {
         this.theaterID = theaterID;

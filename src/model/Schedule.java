@@ -13,6 +13,15 @@ public class Schedule {
     private Time startTime;
 
     public Schedule() {}
+    
+    public Schedule(int movieID, int theaterID, Date startDate, String weekday, int showNumber, Time startTime) {
+        this.movieID = movieID;
+        this.theaterID = theaterID;
+        this.startDate = startDate;
+        this.weekday = weekday;
+        this.showNumber = showNumber;
+        this.startTime = startTime;
+    }
 
     public Schedule(int scheduleID, int movieID, int theaterID, Date startDate, String weekday, int showNumber, Time startTime) {
         this.scheduleID = scheduleID;

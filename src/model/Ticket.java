@@ -11,6 +11,16 @@ public class Ticket {
     private int salePrice;
 
     public Ticket() {}
+    
+    public Ticket(int scheduleID, int theaterID, String seatID, int bookingID, boolean isIssued, int standardPrice, int salePrice) {
+        this.scheduleID = scheduleID;
+        this.theaterID = theaterID;
+        this.seatID = seatID;
+        this.bookingID = bookingID;
+        this.isIssued = isIssued;
+        this.standardPrice = standardPrice;
+        this.salePrice = salePrice;
+    }
 
     public Ticket(int ticketID, int scheduleID, int theaterID, String seatID, int bookingID, boolean isIssued, int standardPrice, int salePrice) {
         this.ticketID = ticketID;

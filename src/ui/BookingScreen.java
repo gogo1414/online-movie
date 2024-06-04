@@ -53,7 +53,7 @@ public class BookingScreen extends JFrame {
     private DefaultListModel<String> listModel = new DefaultListModel<>();
     private JList<String> movielist;
 
-    private List<String> theaters;
+    private List<Theater> theaters;
     private DefaultListModel<String> listModel2 = new DefaultListModel<>();
     private JList<String> theaterlist;
 
@@ -319,9 +319,11 @@ public class BookingScreen extends JFrame {
     }
 
     public void loadTheaters() throws SQLException {
-        theaters = theaterDAO.getAllTheatersName();
-        for (String theaterName : theaters) {
-            listModel2.addElement(theaterName);
+        theaters = theaterDAO.getAllTheaters();
+        for (Theater theater : theaters) {
+        	if(theater.isActive()) {
+        		listModel2.addElement(theater.getTheaterName());
+            }
         }
         theaterlist = new JList<>(listModel2);
     }

@@ -107,7 +107,7 @@ public class AdminPanel extends JFrame {
             	    "PRIMARY KEY (`CustomerID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
             	    "CREATE TABLE IF NOT EXISTS `dbtest`.`bookings` (" +
-            	    "`BookingID` INT NOT NULL AUTO_INCREMENT, `PaymentMethod` VARCHAR(50) NOT NULL, `PaymentStatus` VARCHAR(50) NOT NULL, " +
+            	    "`BookingID` INT NOT NULL AUTO_INCREMENT, `PaymentMethod` VARCHAR(50) NOT NULL, `PaymentStatus` tinyint NOT NULL, " +
             	    "`Amount` INT NOT NULL, `CustomerID` VARCHAR(50) NOT NULL, `PaymentDate` DATE NOT NULL, " +
             	    "PRIMARY KEY (`BookingID`), INDEX `CustomerID` (`CustomerID` ASC) VISIBLE, " +
             	    "CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `dbtest`.`customers` (`CustomerID`) " +
@@ -214,18 +214,18 @@ public class AdminPanel extends JFrame {
             	    "('E13', 5, 0), ('E14', 5, 0), ('E15', 5, 0), ('E16', 5, 0);",
 
             	    "INSERT INTO bookings (PaymentMethod, PaymentStatus, Amount, CustomerID, PaymentDate) VALUES" +
-            	    "('Credit Card', 'Paid', 150, '2', '2023-01-10')," +
-            	    "('Credit Card', 'Paid', 120, '2', '2023-02-15')," +
-            	    "('PayPal', 'Paid', 130, '2', '2023-03-20')," +
-            	    "('Credit Card', 'Paid', 140, '2', '2023-04-25')," +
-            	    "('Debit Card', 'Paid', 160, '2', '2023-05-30')," +
-            	    "('Credit Card', 'Paid', 170, '2', '2023-06-05')," +
-            	    "('PayPal', 'Paid', 180, '2', '2023-07-10')," +
-            	    "('Credit Card', 'Paid', 190, '2', '2023-08-15')," +
-            	    "('Debit Card', 'Paid', 200, '2', '2023-09-20')," +
-            	    "('Credit Card', 'Paid', 210, '2', '2023-10-25')," +
-            	    "('PayPal', 'Paid', 220, '2', '2023-11-30')," +
-            	    "('Debit Card', 'Paid', 230, '2', '2023-12-05');",
+            	    "('Card', '1', 150, '2', '2023-01-10')," +
+            	    "('Card', '1', 120, '2', '2023-02-15')," +
+            	    "('Cash', '1', 130, '2', '2023-03-20')," +
+            	    "('Card', '1', 140, '2', '2023-04-25')," +
+            	    "('Card', '1', 160, '2', '2023-05-30')," +
+            	    "('Card', '1', 170, '2', '2023-06-05')," +
+            	    "('Cash', '1', 180, '2', '2023-07-10')," +
+            	    "('Cash', '1', 190, '2', '2023-08-15')," +
+            	    "('Cash', '1', 200, '2', '2023-09-20')," +
+            	    "('Card', '1', 210, '2', '2023-10-25')," +
+            	    "('Cash', '1', 220, '2', '2023-11-30')," +
+            	    "('Cash', '1', 230, '2', '2023-12-05');",
 
             	    "INSERT INTO tickets (ScheduleID, TheaterID, SeatID, BookingID, IsIssued, StandardPrice, SalePrice) VALUES" +
             	    "(1, 1, 'A1', 1, 1, 15000, 15000)," +

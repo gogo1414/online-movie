@@ -5,14 +5,14 @@ import java.util.Date;
 public class Booking {
     private int bookingID;
     private String paymentMethod;
-    private String paymentStatus;
+    private int paymentStatus;
     private int amount;
     private String customerID;
     private Date paymentDate;
 
     public Booking() {}
 
-    public Booking( String paymentMethod, String paymentStatus, int amount, String customerID, Date paymentDate) {
+    public Booking( String paymentMethod, int paymentStatus, int amount, String customerID, Date paymentDate) {
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.amount = amount;
@@ -20,9 +20,7 @@ public class Booking {
         this.paymentDate = paymentDate;
     }
 
-    
-    
-    public Booking(int bookingID, String paymentMethod, String paymentStatus, int amount, String customerID, Date paymentDate) {
+    public Booking(int bookingID, String paymentMethod, int paymentStatus, int amount, String customerID, Date paymentDate) {
         this.bookingID = bookingID;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
@@ -47,11 +45,11 @@ public class Booking {
         this.paymentMethod = paymentMethod;
     }
 
-    public String getPaymentStatus() {
+    public int getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(int paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 

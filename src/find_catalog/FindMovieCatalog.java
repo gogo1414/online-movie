@@ -16,7 +16,7 @@ import ui.MainMenuScreen;
 
 public class FindMovieCatalog extends JFrame {
 
-    private JButton backButton = new JButton("Back");
+    private JButton backButton = new JButton("뒤로가기");
 
     public FindMovieCatalog() {
         setTitle("영화 조회");
@@ -69,8 +69,15 @@ public class FindMovieCatalog extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MovieListScreen(text).setVisible(true);
-                dispose();
+            	if(text.equals("영화명")) {
+            		new MovieListScreen(text).setVisible(true);
+            		dispose();
+            	}
+            	else {
+                new MovieListScreen2(text).setVisible(true);
+                dispose();}
+            	
+               
             }
         });
         return button;

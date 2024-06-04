@@ -68,7 +68,7 @@ public class MovieListScreen extends JFrame {
                     	}
                     	
                         if (selectedMovie != null) {
-                            new MovieDetailsScreen(selectedMovie).setVisible(true);
+                            new MovieDetailsScreen(selectedMovie,catalogue).setVisible(true);
                             dispose();
                         }
                     } catch (SQLException ex) {

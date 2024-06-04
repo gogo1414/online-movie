@@ -11,7 +11,7 @@ public class AllMovieInfo {
 	public static Theater theater;
 	public static Ticket ticket;
 	public static String catalog;
-
+	public static String whatIsIt;
 	public static int nowIdx =0;
 	
 	

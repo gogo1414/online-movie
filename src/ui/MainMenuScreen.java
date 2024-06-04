@@ -37,7 +37,7 @@ public class MainMenuScreen extends JFrame {
                 dispose();
             }
         });
-        
+
         JButton bookingHistoryButton = new JButton("예매 내역 확인");
         bookingHistoryButton.addActionListener(new ActionListener() {
             @Override
@@ -46,13 +46,34 @@ public class MainMenuScreen extends JFrame {
                 dispose();
             }
         });
-        
-        gbc.gridx = 0;
+
+        JButton logoutButton = new JButton("로그아웃");
+        logoutButton.addActionListener(e -> {
+            new AdminOrUserScreen().setVisible(true);
+            dispose();
+        });
+
+        // Logout button at top right
+        gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.NORTHEAST;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        panel.add(logoutButton, gbc);
+
+        // Reset gbc for other buttons
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+
+        // Place buttons in the center slightly above their previous positions
+        gbc.gridx = 0;
+        gbc.gridy = 1; // Move up one row
+        gbc.gridwidth = 2; // Span two columns to center the buttons
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(movieListButton, gbc);
-        
-        gbc.gridy = 1;
+
+        gbc.gridy = 2; // Move up one row
         panel.add(bookingHistoryButton, gbc);
 
         add(panel);

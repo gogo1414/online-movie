@@ -6,13 +6,13 @@ public class Ticket {
     private int theaterID;
     private String seatID;
     private int bookingID;
-    private boolean isIssued;
+    private int isIssued;
     private int standardPrice;
     private int salePrice;
 
     public Ticket() {}
     
-    public Ticket(int scheduleID, int theaterID, String seatID, int bookingID, boolean isIssued, int standardPrice, int salePrice) {
+    public Ticket(int scheduleID, int theaterID, String seatID, int bookingID, int isIssued, int standardPrice, int salePrice) {
         this.scheduleID = scheduleID;
         this.theaterID = theaterID;
         this.seatID = seatID;
@@ -22,7 +22,7 @@ public class Ticket {
         this.salePrice = salePrice;
     }
 
-    public Ticket(int ticketID, int scheduleID, int theaterID, String seatID, int bookingID, boolean isIssued, int standardPrice, int salePrice) {
+    public Ticket(int ticketID, int scheduleID, int theaterID, String seatID, int bookingID, int isIssued, int standardPrice, int salePrice) {
         this.ticketID = ticketID;
         this.scheduleID = scheduleID;
         this.theaterID = theaterID;
@@ -73,11 +73,11 @@ public class Ticket {
         this.bookingID = bookingID;
     }
 
-    public boolean isIssued() {
+    public int isIssued() {
         return isIssued;
     }
 
-    public void setIssued(boolean isIssued) {
+    public void setIssued(int isIssued) {
         this.isIssued = isIssued;
     }
 

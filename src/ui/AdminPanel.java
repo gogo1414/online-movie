@@ -95,7 +95,7 @@ public class AdminPanel extends JFrame {
 
     private void initializeDatabase() {
         try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DROP DATABASE dbtest");
+            stmt.executeUpdate("DROP DATABASE IF EXISTS dbtest");
             stmt.executeUpdate("CREATE DATABASE dbtest");
             
             stmt.executeUpdate("USE dbtest");
@@ -108,51 +108,51 @@ public class AdminPanel extends JFrame {
             stmt.executeUpdate("CREATE SCHEMA IF NOT EXISTS `dbtest` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;");
             stmt.executeUpdate("USE `dbtest` ;");
 
-            // 테이블 생성
+            // 테이블 생성 쿼리들
             String[] tableCreationQueries = new String[] {
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`customers` (" +
-            	    "`CustomerID` VARCHAR(50) NOT NULL, `Name` VARCHAR(100) NOT NULL, `Phone` VARCHAR(20) NOT NULL, " +
-            	    "`Email` VARCHAR(100) NOT NULL, `IsAdmin` TINYINT(1) NOT NULL, `Password` VARCHAR(20) NOT NULL, " +
-            	    "PRIMARY KEY (`CustomerID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`customers` (" +
+                "`CustomerID` VARCHAR(50) NOT NULL, `Name` VARCHAR(100) NOT NULL, `Phone` VARCHAR(20) NOT NULL, " +
+                "`Email` VARCHAR(100) NOT NULL, `IsAdmin` TINYINT(1) NOT NULL, `Password` VARCHAR(20) NOT NULL, " +
+                "PRIMARY KEY (`CustomerID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`bookings` (" +
-            	    "`BookingID` INT NOT NULL AUTO_INCREMENT, `PaymentMethod` VARCHAR(50) NOT NULL, `PaymentStatus` tinyint NOT NULL, " +
-            	    "`Amount` INT NOT NULL, `CustomerID` VARCHAR(50) NOT NULL, `PaymentDate` DATE NOT NULL, " +
-            	    "PRIMARY KEY (`BookingID`), INDEX `CustomerID` (`CustomerID` ASC) VISIBLE, " +
-            	    "CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `dbtest`.`customers` (`CustomerID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`bookings` (" +
+                "`BookingID` INT NOT NULL AUTO_INCREMENT, `PaymentMethod` VARCHAR(50) NOT NULL, `PaymentStatus` tinyint NOT NULL, " +
+                "`Amount` INT NOT NULL, `CustomerID` VARCHAR(50) NOT NULL, `PaymentDate` DATE NOT NULL, " +
+                "PRIMARY KEY (`BookingID`), INDEX `CustomerID` (`CustomerID` ASC) VISIBLE, " +
+                "CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `dbtest`.`customers` (`CustomerID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`movies` (" +
-            	    "`MovieID` INT NOT NULL AUTO_INCREMENT, `Title` VARCHAR(255) NOT NULL, `Duration` VARCHAR(50) NOT NULL, `Rating` VARCHAR(50) NOT NULL, " +
-            	    "`Director` VARCHAR(100) NOT NULL, `Actors` VARCHAR(255) NOT NULL, `Genre` VARCHAR(50) NOT NULL, `Story` TEXT NOT NULL, " +
-            	    "`ReleaseDate` DATE NOT NULL, `Score` INT NOT NULL, PRIMARY KEY (`MovieID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`movies` (" +
+                "`MovieID` INT NOT NULL AUTO_INCREMENT, `Title` VARCHAR(255) NOT NULL, `Duration` VARCHAR(50) NOT NULL, `Rating` VARCHAR(50) NOT NULL, " +
+                "`Director` VARCHAR(100) NOT NULL, `Actors` VARCHAR(255) NOT NULL, `Genre` VARCHAR(50) NOT NULL, `Story` TEXT NOT NULL, " +
+                "`ReleaseDate` DATE NOT NULL, `Score` INT NOT NULL, PRIMARY KEY (`MovieID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`theaters` (" +
-            	    "`TheaterID` INT NOT NULL AUTO_INCREMENT, `SeatCount` INT NOT NULL, `TheaterName` VARCHAR(255) NOT NULL, `IsActive` TINYINT(1) NOT NULL, " +
-            	    "`Width` INT NOT NULL, `Height` INT NOT NULL, PRIMARY KEY (`TheaterID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`theaters` (" +
+                "`TheaterID` INT NOT NULL AUTO_INCREMENT, `SeatCount` INT NOT NULL, `TheaterName` VARCHAR(255) NOT NULL, `IsActive` TINYINT(1) NOT NULL, " +
+                "`Width` INT NOT NULL, `Height` INT NOT NULL, PRIMARY KEY (`TheaterID`)) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`schedules` (" +
-            	    "`ScheduleID` INT NOT NULL AUTO_INCREMENT, `MovieID` INT NOT NULL, `TheaterID` INT NOT NULL, `StartDate` DATE NOT NULL, `Weekday` VARCHAR(50) NOT NULL, " +
-            	    "`ShowNumber` INT NOT NULL, `StartTime` TIME NOT NULL, PRIMARY KEY (`ScheduleID`), INDEX `MovieID` (`MovieID` ASC) VISIBLE, " +
-            	    "INDEX `TheaterID` (`TheaterID` ASC) VISIBLE, CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `dbtest`.`movies` (`MovieID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `schedules_ibfk_2` FOREIGN KEY (`TheaterID`) REFERENCES `dbtest`.`theaters` (`TheaterID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`schedules` (" +
+                "`ScheduleID` INT NOT NULL AUTO_INCREMENT, `MovieID` INT NOT NULL, `TheaterID` INT NOT NULL, `StartDate` DATE NOT NULL, `Weekday` VARCHAR(50) NOT NULL, " +
+                "`ShowNumber` INT NOT NULL, `StartTime` TIME NOT NULL, PRIMARY KEY (`ScheduleID`), INDEX `MovieID` (`MovieID` ASC) VISIBLE, " +
+                "INDEX `TheaterID` (`TheaterID` ASC) VISIBLE, CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `dbtest`.`movies` (`MovieID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `schedules_ibfk_2` FOREIGN KEY (`TheaterID`) REFERENCES `dbtest`.`theaters` (`TheaterID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`seats` (" +
-            	    "`SeatID` VARCHAR(10) NOT NULL, `TheaterID` INT NOT NULL, `IsOccupied` TINYINT(1) NOT NULL, PRIMARY KEY (`SeatID`), " +
-            	    "INDEX `TheaterID` (`TheaterID` ASC) VISIBLE, CONSTRAINT `seats_ibfk_1` FOREIGN KEY (`TheaterID`) REFERENCES `dbtest`.`theaters` (`TheaterID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`seats` (" +
+                "`SeatID` VARCHAR(10) NOT NULL, `TheaterID` INT NOT NULL, `IsOccupied` TINYINT(1) NOT NULL, PRIMARY KEY (`SeatID`, `TheaterID`), " +
+                "INDEX `TheaterID` (`TheaterID` ASC) VISIBLE, CONSTRAINT `seats_ibfk_1` FOREIGN KEY (`TheaterID`) REFERENCES `dbtest`.`theaters` (`TheaterID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;",
 
-            	    "CREATE TABLE IF NOT EXISTS `dbtest`.`tickets` (" +
-            	    "`TicketID` INT NOT NULL AUTO_INCREMENT, `ScheduleID` INT NOT NULL, `TheaterID` INT NOT NULL, `SeatID` VARCHAR(10) NOT NULL, `BookingID` INT NOT NULL, " +
-            	    "`IsIssued` TINYINT(1) NOT NULL, `StandardPrice` INT NOT NULL, `SalePrice` INT NOT NULL, PRIMARY KEY (`TicketID`), " +
-            	    "INDEX `ScheduleID` (`ScheduleID` ASC) VISIBLE, INDEX `TheaterID` (`TheaterID` ASC) VISIBLE, INDEX `SeatID` (`SeatID` ASC) VISIBLE, " +
-            	    "INDEX `BookingID` (`BookingID` ASC) VISIBLE, CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`ScheduleID`) REFERENCES `dbtest`.`schedules` (`ScheduleID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`TheaterID`) REFERENCES `dbtest`.`theaters` (`TheaterID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`SeatID`) REFERENCES `dbtest`.`seats` (`SeatID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `tickets_ibfk_4` FOREIGN KEY (`BookingID`) REFERENCES `dbtest`.`bookings` (`BookingID`) " +
-            	    "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;"
-            	};
+                "CREATE TABLE IF NOT EXISTS `dbtest`.`tickets` (" +
+                "`TicketID` INT NOT NULL AUTO_INCREMENT, `ScheduleID` INT NOT NULL, `TheaterID` INT NOT NULL, `SeatID` VARCHAR(10) NOT NULL, `BookingID` INT NOT NULL, " +
+                "`IsIssued` TINYINT(1) NOT NULL, `StandardPrice` INT NOT NULL, `SalePrice` INT NOT NULL, PRIMARY KEY (`TicketID`), " +
+                "INDEX `ScheduleID` (`ScheduleID` ASC) VISIBLE, INDEX `TheaterID` (`TheaterID` ASC) VISIBLE, INDEX `SeatID` (`SeatID` ASC) VISIBLE, " +
+                "INDEX `BookingID` (`BookingID` ASC) VISIBLE, CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`ScheduleID`) REFERENCES `dbtest`.`schedules` (`ScheduleID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`TheaterID`) REFERENCES `dbtest`.`theaters` (`TheaterID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`SeatID`) REFERENCES `dbtest`.`seats` (`SeatID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `tickets_ibfk_4` FOREIGN KEY (`BookingID`) REFERENCES `dbtest`.`bookings` (`BookingID`) " +
+                "ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;"
+            };
 
 
             for (String query : tableCreationQueries) {
@@ -180,11 +180,18 @@ public class AdminPanel extends JFrame {
             	    "('Movie 12', '105 min', 'PG', 'Director 12', '홍길동', 'Family', 'Story 12', '2023-12-25', 84);",
 
             	    "INSERT INTO theaters (SeatCount, TheaterName, IsActive, Width, Height) VALUES" +
-            	    "(16, '1대입구', 1, 4, 4)," +
-            	    "(16, '2대입구', 1, 4, 4)," +
-            	    "(16, '3대입구', 1, 4, 4)," +
-            	    "(16, '4대입구', 1, 4, 4)," +
-            	    "(16, '5대입구', 1, 4, 4);",
+            	    "(100, '1대입구', 1, 4, 4)," +
+            	    "(100, '2대입구', 1, 4, 4)," +
+            	    "(100, '3대입구', 1, 4, 4)," +
+            	    "(100, '4대입구', 0, 4, 4)," +
+            	    "(100, '5대입구', 0, 4, 4)," +
+            	    "(100, '6대입구', 0, 4, 4)," +
+            	    "(100, '7대입구', 0, 4, 4)," +
+            	    "(100, '8대입구', 0, 4, 4)," +
+            	    "(100, '9대입구', 0, 4, 4)," +
+            	    "(100, '10대입구', 0, 4, 4)," +
+            	    "(100, '11대입구', 0, 4, 4)," +
+            	    "(100, '12대입구', 0, 4, 4);",
 
             	    "INSERT INTO schedules (MovieID, TheaterID, StartDate, Weekday, ShowNumber, StartTime) VALUES" +
             	    "(1, 1, '2023-01-15', 'Monday', 1, '10:00:00')," +
@@ -201,26 +208,45 @@ public class AdminPanel extends JFrame {
             	    "(12, 2, '2023-12-25', 'Friday', 1, '19:00:00');",
 
             	    "INSERT INTO seats (SeatID, TheaterID, IsOccupied) VALUES" +
-            	    "('A1', 1, 0), ('A2', 1, 0), ('A3', 1, 0), ('A4', 1, 0)," +
+            	    "('A1', 1, 0), ('A2', 1, 1), ('A3', 1, 0), ('A4', 1, 0)," +
             	    "('A5', 1, 0), ('A6', 1, 0), ('A7', 1, 0), ('A8', 1, 0)," +
-            	    "('A9', 1, 0), ('A10', 1, 0), ('A11', 1, 0), ('A12', 1, 0)," +
-            	    "('A13', 1, 0), ('A14', 1, 0), ('A15', 1, 0), ('A16', 1, 0)," +
-            	    "('B1', 2, 0), ('B2', 2, 0), ('B3', 2, 0), ('B4', 2, 0)," +
-            	    "('B5', 2, 0), ('B6', 2, 0), ('B7', 2, 0), ('B8', 2, 0)," +
-            	    "('B9', 2, 0), ('B10', 2, 0), ('B11', 2, 0), ('B12', 2, 0)," +
-            	    "('B13', 2, 0), ('B14', 2, 0), ('B15', 2, 0), ('B16', 2, 0)," +
+            	    "('A9', 1, 0), ('A10', 1, 0), ('B1', 1, 0), ('B2', 1, 0)," +
+            	    "('B3', 1, 1), ('B4', 1, 0), ('B5', 1, 0), ('B6', 1, 0)," +
+            	    "('B7', 1, 0), ('B8', 1, 0), ('B9', 1, 0), ('B10', 1, 0)," +
+            	    "('C1', 1, 0), ('C2', 1, 0), ('C3', 1, 0), ('C4', 1, 0)," +
+            	    "('C5', 1, 0), ('C6', 1, 0), ('C7', 1, 0), ('C8', 1, 0)," +
+            	    "('C9', 1, 0), ('C10', 1, 0), ('D1', 1, 0), ('D2', 1, 0)," +
+            	    "('D3', 1, 0), ('D4', 1, 0), ('D5', 1, 0), ('D6', 1, 0)," +
+            	    "('D7', 1, 0), ('D8', 1, 0), ('D9', 1, 0), ('D10', 1, 0)," +
+            	    "('E1', 1, 0), ('E2', 1, 0), ('E3', 1, 0), ('E4', 1, 0)," +
+            	    "('E5', 1, 0), ('E6', 1, 0), ('E7', 1, 0), ('E8', 1, 0)," +
+            	    "('E9', 1, 0), ('E10', 1, 0)," +
+            	    "('A1', 2, 0), ('A2', 2, 0), ('A3', 2, 0), ('A4', 2, 0)," +
+            	    "('A5', 2, 0), ('A6', 2, 0), ('A7', 2, 0), ('A8', 2, 0)," +
+            	    "('A9', 2, 0), ('A10', 2, 0), ('B1', 2, 0), ('B2', 2, 0)," +
+            	    "('B3', 2, 0), ('B4', 2, 0), ('B5', 2, 0), ('B6', 2, 0)," +
+            	    "('B7', 2, 0), ('B8', 2, 0), ('B9', 2, 0), ('B10', 2, 0)," +
+            	    "('C1', 2, 0), ('C2', 2, 0), ('C3', 2, 0), ('C4', 2, 0)," +
+            	    "('C5', 2, 0), ('C6', 2, 0), ('C7', 2, 1), ('C8', 2, 0)," +
+            	    "('C9', 2, 0), ('C10', 2, 0), ('D1', 2, 0), ('D2', 2, 0)," +
+            	    "('D3', 2, 0), ('D4', 2, 0), ('D5', 2, 0), ('D6', 2, 0)," +
+            	    "('D7', 2, 0), ('D8', 2, 0), ('D9', 2, 0), ('D10', 2, 1)," +
+            	    "('E1', 2, 0), ('E2', 2, 0), ('E3', 2, 0), ('E4', 2, 0)," +
+            	    "('E5', 2, 0), ('E6', 2, 0), ('E7', 2, 0), ('E8', 2, 0)," +
+            	    "('E9', 2, 0), ('E10', 2, 1)," +
+            	    "('A1', 3, 0), ('A2', 3, 1), ('A3', 3, 0), ('A4', 3, 0)," +
+            	    "('A5', 3, 0), ('A6', 3, 0), ('A7', 3, 0), ('A8', 3, 0)," +
+            	    "('A9', 3, 0), ('A10', 3, 0), ('B1', 3, 0), ('B2', 3, 0)," +
+            	    "('B3', 3, 0), ('B4', 3, 0), ('B5', 3, 0), ('B6', 3, 1)," +
+            	    "('B7', 3, 0), ('B8', 3, 0), ('B9', 3, 0), ('B10', 3, 0)," +
             	    "('C1', 3, 0), ('C2', 3, 0), ('C3', 3, 0), ('C4', 3, 0)," +
-            	    "('C5', 3, 0), ('C6', 3, 0), ('C7', 3, 0), ('C8', 3, 0)," +
-            	    "('C9', 3, 0), ('C10', 3, 0), ('C11', 3, 0), ('C12', 3, 0)," +
-            	    "('C13', 3, 0), ('C14', 3, 0), ('C15', 3, 0), ('C16', 3, 0)," +
-            	    "('D1', 4, 0), ('D2', 4, 0), ('D3', 4, 0), ('D4', 4, 0)," +
-            	    "('D5', 4, 0), ('D6', 4, 0), ('D7', 4, 0), ('D8', 4, 0)," +
-            	    "('D9', 4, 0), ('D10', 4, 0), ('D11', 4, 0), ('D12', 4, 0)," +
-            	    "('D13', 4, 0), ('D14', 4, 0), ('D15', 4, 0), ('D16', 4, 0)," +
-            	    "('E1', 5, 0), ('E2', 5, 0), ('E3', 5, 0), ('E4', 5, 0)," +
-            	    "('E5', 5, 0), ('E6', 5, 0), ('E7', 5, 0), ('E8', 5, 0)," +
-            	    "('E9', 5, 0), ('E10', 5, 0), ('E11', 5, 0), ('E12', 5, 0)," +
-            	    "('E13', 5, 0), ('E14', 5, 0), ('E15', 5, 0), ('E16', 5, 0);",
+            	    "('C5', 3, 0), ('C6', 3, 0), ('C7', 3, 1), ('C8', 3, 0)," +
+            	    "('C9', 3, 0), ('C10', 3, 0), ('D1', 3, 0), ('D2', 3, 0)," +
+            	    "('D3', 3, 0), ('D4', 3, 0), ('D5', 3, 0), ('D6', 3, 0)," +
+            	    "('D7', 3, 1), ('D8', 3, 0), ('D9', 3, 0), ('D10', 3, 0)," +
+            	    "('E1', 3, 0), ('E2', 3, 0), ('E3', 3, 0), ('E4', 3, 0)," +
+            	    "('E5', 3, 0), ('E6', 3, 0), ('E7', 3, 1), ('E8', 3, 0)," +
+            	    "('E9', 3, 0), ('E10', 3, 0);",
 
             	    "INSERT INTO bookings (PaymentMethod, PaymentStatus, Amount, CustomerID, PaymentDate) VALUES" +
             	    "('Card', '1', 150, '2', '2023-01-10')," +

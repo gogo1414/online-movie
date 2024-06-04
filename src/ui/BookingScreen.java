@@ -303,7 +303,12 @@ public class BookingScreen extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-                new SeatScreen(schedule).setVisible(true);
+                try {
+					new SeatScreen(schedule).setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
                 dispose();
             }
            

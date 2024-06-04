@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,22 +21,31 @@ import javax.swing.SwingUtilities;
 
 import dao.BookingDAO;
 import dao.SeatDAO;
+import dao.TheaterDAO;
 import dao.TicketDAO;
 import model.Booking;
 import model.Schedule;
+import model.Seat;
+import model.Theater;
+import model.Ticket;
 
 public class SeatScreen extends JFrame {
     
     private Booking booking;
+    private Ticket ticket;
+    private Theater theater;
+    private List<Seat> seats;
     
     private BookingDAO bookingDao;
+    private TheaterDAO theaterDao;
     private TicketDAO ticketDao;
     private SeatDAO seatDao;
     
     private static final int ROW = 10;
     private static final int HEIGHT = 10;
     private static final int SEAT_PRICE = 10000;
-    private static final int TOTAL_SEATS = 255;
+    private final int TOTAL_SEATS = 255;
+    private int occupiedSeats = 0;
 
     private String selectedSeat = null;
 
@@ -50,7 +60,7 @@ public class SeatScreen extends JFrame {
 
     private JLabel selectedSeatLabel;
     private JLabel seatedCounterLabel = new JLabel("좌석 현황");
-    private JLabel seatedCounterLabel2 = new JLabel("255 / " + TOTAL_SEATS);
+    private JLabel seatedCounterLabel2 = new JLabel(TOTAL_SEATS - occupiedSeats + " / " + TOTAL_SEATS);
 
     private JLabel totalPriceLabel;
     
@@ -64,18 +74,23 @@ public class SeatScreen extends JFrame {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date date = null;
     
-    public SeatScreen(Schedule schedule) {
+    public SeatScreen(Schedule schedule) throws SQLException {
         bookingDao = new BookingDAO();
         ticketDao = new TicketDAO();
+        theaterDao = new TheaterDAO();
+        seatDao = new SeatDAO();
+        
+        theater = theaterDao.getTheaterByID(schedule.getTheaterID());
+        seats = seatDao.getAllSeats(theater.getTheaterID());
 
         setTitle("Seat Selection");
-        setSize(900, 900);
+        setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
         
-        backButton.setBounds(760, 600, 100, 40);
+        backButton.setBounds(810, 600, 100, 40);
         mainPanel.add(backButton);
         backButton.addActionListener(e -> {
             try {
@@ -87,7 +102,7 @@ public class SeatScreen extends JFrame {
         });
         
         seatPanel = new JPanel();
-        seatPanel.setBounds(30, 50, 600, 600);
+        seatPanel.setBounds(0, 50, 700, 600);
         seatPanel.setBackground(Color.white);
         seatPanel.setLayout(new BorderLayout(5, 5));
         JLabel labelScreen = new JLabel("Screen", SwingConstants.CENTER);
@@ -107,10 +122,18 @@ public class SeatScreen extends JFrame {
         for (int row = 0; row < ROW; row++) {
             seatsGrid.add(new JLabel(String.valueOf(rows[row]), SwingConstants.CENTER));
             for (int col = 0; col < HEIGHT; col++) {
-                JButton seatButton = new JButton(rows[row] + "" + (col + 1));
-                seatButton.setBackground(Color.gray);
+            	String seatID = rows[row] + "" + (col + 1);
+            	boolean isOccupied = seats.stream().anyMatch(seat -> seat.getSeatID().equals(seatID) && seat.isOccupied());
+                
+                JButton seatButton = new JButton(seatID);
+                seatButton.setBackground(isOccupied ? Color.green : Color.gray);
                 seatButton.setSize(10, 10);
-                seatButton.addActionListener(new SeatButtonListener(rows[row], col + 1));
+                seatButton.setEnabled(!isOccupied);
+                
+                if(isOccupied)
+                	occupiedSeats++;
+                else
+                	seatButton.addActionListener(new SeatButtonListener(rows[row], col + 1));
                 seatsGrid.add(seatButton);
             }
         }
@@ -119,7 +142,7 @@ public class SeatScreen extends JFrame {
 
         reservationButton = new JButton("예매하기");
         reservationButton.setSize(100, 50);
-        reservationButton.setLocation(650, 600);
+        reservationButton.setLocation(700, 600);
         reservationButton.addActionListener(e -> {
             if (selectedSeat == null) {
                 JOptionPane.showMessageDialog(SeatScreen.this, "No seats selected.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -132,10 +155,26 @@ public class SeatScreen extends JFrame {
                 booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
                 
                 try {
-                    bookingDao.addBooking(booking);
+                    booking = bookingDao.addBooking(booking);
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
+                
+                ticket = new Ticket(
+                		schedule.getScheduleID(),
+                		schedule.getTheaterID(),
+                		selectedSeat,
+                		booking.getBookingID(),
+                		1,
+                		SEAT_PRICE,
+                		SEAT_PRICE);
+                
+                try {
+					ticketDao.addTicket(ticket);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
                 
                 new MainMenuScreen(MainMenuScreen.customer).setVisible(true);
                 dispose();
@@ -145,22 +184,22 @@ public class SeatScreen extends JFrame {
         mainPanel.add(reservationButton);
 
         selectedSeatLabel = new JLabel("선택된 좌석: None");
-        selectedSeatLabel.setBounds(650, 500, 200, 30);
+        selectedSeatLabel.setBounds(700, 500, 200, 30);
         mainPanel.add(selectedSeatLabel);
 
-        seatedCounterLabel.setBounds(300, 670, 100, 100);
+        seatedCounterLabel.setBounds(320, 610, 100, 100);
         mainPanel.add(seatedCounterLabel);
 
-        seatedCounterLabel2.setBounds(300, 690, 100, 100);
+        seatedCounterLabel2.setBounds(320, 630, 100, 100);
         mainPanel.add(seatedCounterLabel2);
 
         totalPriceLabel = new JLabel("결제 금액: 0");
-        totalPriceLabel.setBounds(650, 450, 150, 30);
+        totalPriceLabel.setBounds(700, 450, 150, 30);
         mainPanel.add(totalPriceLabel);
 
         // Add the payment method buttons
         cardButton = new JButton("Card");
-        cardButton.setBounds(650, 550, 80, 30);
+        cardButton.setBounds(700, 550, 80, 30);
         cardButton.addActionListener(e -> {
             selectedMethod = "Card";
             cardButton.setBackground(Color.green);
@@ -169,7 +208,7 @@ public class SeatScreen extends JFrame {
         mainPanel.add(cardButton);
 
         cashButton = new JButton("Cash");
-        cashButton.setBounds(750, 550, 80, 30);
+        cashButton.setBounds(800, 550, 80, 30);
         cashButton.addActionListener(e -> {
             selectedMethod = "Cash";
             cashButton.setBackground(Color.green);
@@ -221,10 +260,17 @@ public class SeatScreen extends JFrame {
             selectedSeatLabel.setText("선택된 좌석: " + selectedSeat);
             totalPriceLabel.setText("결제 금액: " + SEAT_PRICE);
         }
-        seatedCounterLabel2.setText(TOTAL_SEATS - (selectedSeat != null ? 1 : 0) + " / " + TOTAL_SEATS);
+        seatedCounterLabel2.setText(TOTAL_SEATS - ( occupiedSeats + (selectedSeat != null ? 1 : 0)) + " / " + TOTAL_SEATS);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new SeatScreen(null).setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+			try {
+				new SeatScreen(null).setVisible(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
     }
 }

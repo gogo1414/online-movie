@@ -137,7 +137,8 @@ public class BookingHistoryScreen extends JFrame {
             List<Booking> bookings = bookingDAO.getBookingsByCustomer(MainMenuScreen.customer.getCustomerID());
             for (Booking booking : bookings) {
                 Ticket ticket = ticketDAO.getTicketByBookingID(booking.getBookingID());
-                Movie movie = movieDAO.getMovieByID(ticket.getBookingID()); // Fixed to get movie by ticket's movie ID
+                Schedule schedule = scheduleDAO.getScheduleByID(ticket.getScheduleID());
+                Movie movie = movieDAO.getMovieByID(schedule.getMovieID()); // Fixed to get movie by ticket's movie ID
                 listModel.addElement(booking.getBookingID() + ": " + movie.getTitle());
             }
         } catch (SQLException ex) {

@@ -25,7 +25,7 @@ public class TicketDAO {
             ticket.setTheaterID(rs.getInt("TheaterID"));
             ticket.setSeatID(rs.getString("SeatID"));
             ticket.setBookingID(rs.getInt("BookingID"));
-            ticket.setIssued(rs.getBoolean("IsIssued"));
+            ticket.setIssued(rs.getInt("IsIssued"));
             ticket.setStandardPrice(rs.getInt("StandardPrice"));
             ticket.setSalePrice(rs.getInt("SalePrice"));
         }
@@ -48,7 +48,7 @@ public class TicketDAO {
             ticket.setTheaterID(rs.getInt("TheaterID"));
             ticket.setSeatID(rs.getString("SeatID"));
             ticket.setBookingID(rs.getInt("BookingID"));
-            ticket.setIssued(rs.getBoolean("IsIssued"));
+            ticket.setIssued(rs.getInt("IsIssued"));
             ticket.setStandardPrice(rs.getInt("StandardPrice"));
             ticket.setSalePrice(rs.getInt("SalePrice"));
         }
@@ -65,7 +65,7 @@ public class TicketDAO {
         stmt.setInt(3, ticket.getTheaterID());
         stmt.setString(4, ticket.getSeatID());
         stmt.setInt(5, ticket.getBookingID());
-        stmt.setBoolean(6, ticket.isIssued());
+        stmt.setInt(6, ticket.isIssued());
         stmt.setInt(7, ticket.getStandardPrice());
         stmt.setInt(8, ticket.getSalePrice());
         stmt.executeUpdate();

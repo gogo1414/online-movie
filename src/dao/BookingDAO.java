@@ -58,27 +58,13 @@ public class BookingDAO {
 
     public void addBooking(Booking booking) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        String query = "INSERT INTO bookings (BookingID, PaymentMethod, PaymentStatus, Amount, CustomerID, PaymentDate) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, booking.getBookingID());
-        stmt.setString(2, booking.getPaymentMethod());
-        stmt.setString(3, booking.getPaymentStatus());
-        stmt.setInt(4, booking.getAmount());
-        stmt.setString(5, booking.getCustomerID());
-        stmt.setDate(6, new java.sql.Date(booking.getPaymentDate().getTime()));
-        stmt.executeUpdate();
-    }
-
-    public void updateBooking(Booking booking) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE bookings SET PaymentMethod = ?, PaymentStatus = ?, Amount = ?, CustomerID = ?, PaymentDate = ? WHERE BookingID = ?";
+        String query = "INSERT INTO bookings (PaymentMethod, PaymentStatus, Amount, CustomerID, PaymentDate) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, booking.getPaymentMethod());
         stmt.setString(2, booking.getPaymentStatus());
         stmt.setInt(3, booking.getAmount());
         stmt.setString(4, booking.getCustomerID());
         stmt.setDate(5, new java.sql.Date(booking.getPaymentDate().getTime()));
-        stmt.setInt(6, booking.getBookingID());
         stmt.executeUpdate();
     }
 

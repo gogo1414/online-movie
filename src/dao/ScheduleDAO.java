@@ -8,6 +8,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+
 import model.Schedule;
 import util.DBConnection;
 
@@ -66,17 +68,41 @@ public class ScheduleDAO {
 
         return schedules;
     }
+    
+    public List<Schedule> getSchedulesByTheaterAndMovieAndDate(int theaterID, int movieID, String startDate) throws SQLException {
+        List<Schedule> schedules = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM schedules WHERE TheaterID = ? AND MovieID = ? AND StartDate = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, theaterID);
+        stmt.setInt(2, movieID);
+        stmt.setString(3, startDate);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Schedule schedule = new Schedule();
+            schedule.setScheduleID(rs.getInt("ScheduleID"));
+            schedule.setMovieID(rs.getInt("MovieID"));
+            schedule.setTheaterID(rs.getInt("TheaterID"));
+            schedule.setStartDate(rs.getDate("StartDate"));
+            schedule.setWeekday(rs.getString("Weekday"));
+            schedule.setShowNumber(rs.getInt("ShowNumber"));
+            schedule.setStartTime(rs.getTime("StartTime"));
+            schedules.add(schedule);
+        }
+
+        return schedules;
+    }
 
     public Schedule getScheduleByID(int scheduleID) throws SQLException {
-        Schedule schedule = null;
+    	Schedule schedule = new Schedule();
         Connection conn = DBConnection.getConnection();
         String query = "SELECT * FROM schedules WHERE ScheduleID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, scheduleID);
         ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
-            schedule = new Schedule();
+        while (rs.next()) {
             schedule.setScheduleID(rs.getInt("ScheduleID"));
             schedule.setMovieID(rs.getInt("MovieID"));
             schedule.setTheaterID(rs.getInt("TheaterID"));
@@ -88,33 +114,28 @@ public class ScheduleDAO {
 
         return schedule;
     }
-
-    public void addSchedule(Schedule schedule) throws SQLException {
+    
+    public List<Schedule> getScheduleByTheaterID(int theaterID) throws SQLException {
+    	List<Schedule> schedules = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "INSERT INTO schedules (ScheduleID, MovieID, TheaterID, StartDate, Weekday, ShowNumber, StartTime) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "SELECT * FROM schedules WHERE TheaterID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, schedule.getScheduleID());
-        stmt.setInt(2, schedule.getMovieID());
-        stmt.setInt(3, schedule.getTheaterID());
-        stmt.setDate(4, new java.sql.Date(schedule.getStartDate().getTime()));
-        stmt.setString(5, schedule.getWeekday());
-        stmt.setInt(6, schedule.getShowNumber());
-        stmt.setTime(7, schedule.getStartTime());
-        stmt.executeUpdate();
-    }
+        stmt.setInt(1, theaterID);
+        ResultSet rs = stmt.executeQuery();
 
-    public void updateSchedule(Schedule schedule) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE schedules SET MovieID = ?, TheaterID = ?, StartDate = ?, Weekday = ?, ShowNumber = ?, StartTime = ? WHERE ScheduleID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, schedule.getMovieID());
-        stmt.setInt(2, schedule.getTheaterID());
-        stmt.setDate(3, new java.sql.Date(schedule.getStartDate().getTime()));
-        stmt.setString(4, schedule.getWeekday());
-        stmt.setInt(5, schedule.getShowNumber());
-        stmt.setTime(6, schedule.getStartTime());
-        stmt.setInt(7, schedule.getScheduleID());
-        stmt.executeUpdate();
+        while (rs.next()) {
+            Schedule schedule = new Schedule();
+            schedule.setScheduleID(rs.getInt("ScheduleID"));
+            schedule.setMovieID(rs.getInt("MovieID"));
+            schedule.setTheaterID(rs.getInt("TheaterID"));
+            schedule.setStartDate(rs.getDate("StartDate"));
+            schedule.setWeekday(rs.getString("Weekday"));
+            schedule.setShowNumber(rs.getInt("ShowNumber"));
+            schedule.setStartTime(rs.getTime("StartTime"));
+            schedules.add(schedule);
+        }
+
+        return schedules;
     }
 
     public void deleteSchedule(int scheduleID) throws SQLException {
@@ -124,4 +145,27 @@ public class ScheduleDAO {
         stmt.setInt(1, scheduleID);
         stmt.executeUpdate();
     }
+
+	public Schedule getAllScheduleDateAndTime(String selectedStartDate, String selectedStartTime) throws SQLException {
+		
+		Schedule schedule = new Schedule();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM schedules WHERE StartDate = ? And StartTime = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, selectedStartDate);
+        stmt.setString(2, selectedStartTime);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            schedule.setScheduleID(rs.getInt("ScheduleID"));
+            schedule.setMovieID(rs.getInt("MovieID"));
+            schedule.setTheaterID(rs.getInt("TheaterID"));
+            schedule.setStartDate(rs.getDate("StartDate"));
+            schedule.setWeekday(rs.getString("Weekday"));
+            schedule.setShowNumber(rs.getInt("ShowNumber"));
+            schedule.setStartTime(rs.getTime("StartTime"));
+        }
+
+        return schedule;
+	}
 }

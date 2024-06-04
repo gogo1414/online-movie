@@ -67,19 +67,6 @@ public class CustomerDAO {
         stmt.executeUpdate();
     }
 
-    public void updateCustomer(Customer customer) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE customers SET Name = ?, Phone = ?, Email = ?, IsAdmin = ?, Password = ? WHERE CustomerID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, customer.getName());
-        stmt.setString(2, customer.getPhone());
-        stmt.setString(3, customer.getEmail());
-        stmt.setBoolean(4, customer.isAdmin());
-        stmt.setString(5, customer.getPassword());
-        stmt.setString(6, customer.getCustomerID());
-        stmt.executeUpdate();
-    }
-
     public void deleteCustomer(String customerID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM customers WHERE CustomerID = ?";

@@ -4,7 +4,15 @@ import java.awt.Color;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -13,9 +21,21 @@ import dao.ScheduleDAO;
 import dao.SeatDAO;
 import dao.TheaterDAO;
 import model.AllMovieInfo;
+import model.Booking;
 import model.Movie;
+import model.Schedule;
+import model.Theater;
 
 public class BookingScreen extends JFrame {
+	
+	private Theater theater;
+	private Movie movie;
+	private Schedule schedule;
+	
+	private String selectedTheaterName;
+	private String selectedMovieTitle;
+	private String selectedStartDate;
+	private String selectedStartTime;
 
     private TheaterDAO theaterDAO = new TheaterDAO();
     private SeatDAO seatDAO = new SeatDAO();
@@ -37,13 +57,13 @@ public class BookingScreen extends JFrame {
     private DefaultListModel<String> listModel2 = new DefaultListModel<>();
     private JList<String> theaterlist;
 
-    private List<String> startDates;
+    private List<Schedule> startDates;
     private DefaultListModel<String> listModel3 = new DefaultListModel<>();
-    private JList<String> datelist;
+    private JList<String> datelist = new JList<>(listModel3);
 
-    private List<String> startTimes;
+    private List<Schedule> startTimes;
     private DefaultListModel<String> listModel4 = new DefaultListModel<>();
-    private JList<String> timelist;
+    private JList<String> timelist = new JList<>(listModel4);
 
     private JLabel movieLabel = new JLabel("영화 : ");
     private JLabel theaterLabel = new JLabel("극장 : ");
@@ -75,7 +95,7 @@ public class BookingScreen extends JFrame {
         makePanel(650, 100, 150, 400, "timeSelectPanel");
 
         // ******최종 예약 패널**********
-        makePanel(650, 700, 200, 200, "reservationPanel");
+        makePanel(650, 550, 200, 200, "reservationPanel");
 
         //*******backButton********
         backButton.setBounds(50, 800, 100, 70);
@@ -92,7 +112,7 @@ public class BookingScreen extends JFrame {
         if (name.equals("movieSelectPanel")) {
             loadMovies();
             JScrollPane scrollPane = new JScrollPane(movielist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             movieSelectPanel.add(scrollPane);
             movielist.addListSelectionListener(new ListSelectionListener() {
                 @Override
@@ -107,6 +127,10 @@ public class BookingScreen extends JFrame {
                             theaterlist.clearSelection();
                             datelist.clearSelection();
                             timelist.clearSelection();
+                            listModel3.clear(); // 개봉 날짜 초기화
+                            listModel4.clear(); // 상영 시간 초기화
+                            datelist.setEnabled(false);
+                            timelist.setEnabled(false);
                         }
                     }
                 }
@@ -115,54 +139,70 @@ public class BookingScreen extends JFrame {
         } else if (name.equals("theaterSelectPanel")) {
             loadTheaters();
             JScrollPane scrollPane = new JScrollPane(theaterlist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             theaterSelectPanel.add(scrollPane);
             theaterlist.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (!e.getValueIsAdjusting()) {
-                        String selectedTheater = theaterlist.getSelectedValue();
-                        if (selectedTheater != null) {
-                            theaterLabel.setText("극장 : " + selectedTheater);
+                        selectedTheaterName = theaterlist.getSelectedValue();
+                        selectedMovieTitle = movielist.getSelectedValue();
+                        if (selectedTheaterName != null) {
+                            theaterLabel.setText("극장 : " + selectedTheaterName);
                             dateLabel.setText("날짜 : ");
                             timeLabel.setText("시간 : ");
                             datelist.clearSelection();
                             timelist.clearSelection();
+                            listModel3.clear(); // 개봉 날짜 초기화
+                            listModel4.clear(); // 상영 시간 초기화
+                            datelist.setEnabled(true);
+                            try {
+								loadStartDate();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
                         }
                     }
                 }
             });
 
         } else if (name.equals("dateSelectPanel")) {
-            loadStartDate();
+            datelist.setEnabled(false);
             JScrollPane scrollPane = new JScrollPane(datelist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             dateSelectPanel.add(scrollPane);
             datelist.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (!e.getValueIsAdjusting()) {
-                        String selectedDate = datelist.getSelectedValue();
-                        if (selectedDate != null) {
-                            dateLabel.setText("날짜 : " + selectedDate);
+                        selectedStartDate = datelist.getSelectedValue();
+                        if (selectedStartDate != null) {
+                            dateLabel.setText("날짜 : " + selectedStartDate);
                             timeLabel.setText("시간 : ");
                             timelist.clearSelection();
+                            listModel4.clear(); // 상영 시간 초기화
+                            timelist.setEnabled(true);
+                            try {
+								loadStartTime();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
                         }
                     }
                 }
             });
         } else if (name.equals("timeSelectPanel")) {
-            loadStartTime();
+            timelist.setEnabled(false);
             JScrollPane scrollPane = new JScrollPane(timelist);
-            scrollPane.setBounds(5, 5, 145, 395);
+            scrollPane.setBounds(0, 0, 150, 400);
             timeSelectPanel.add(scrollPane);
             timelist.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (!e.getValueIsAdjusting()) {
-                        String selectedTime = timelist.getSelectedValue();
-                        if (selectedTime != null) {
-                            timeLabel.setText("시간 : " + selectedTime);
+                         selectedStartTime = timelist.getSelectedValue();
+                        if (selectedStartTime != null) {
+                            timeLabel.setText("시간 : " + selectedStartTime);
                         }
                     }
                 }
@@ -237,11 +277,11 @@ public class BookingScreen extends JFrame {
 
     private void makeReservationInfo() {
 
-        movieLabel.setBounds(0, 0, 180, 40);
-        theaterLabel.setBounds(0, 40, 180, 40);
-        dateLabel.setBounds(0, 80, 180, 40);
-        timeLabel.setBounds(0, 120, 180, 40);
-        reservationButton.setBounds(20, 160, 180, 40);
+        movieLabel.setBounds(5, 0, 180, 40);
+        theaterLabel.setBounds(5, 40, 180, 40);
+        dateLabel.setBounds(5, 80, 180, 40);
+        timeLabel.setBounds(5, 120, 180, 40);
+        reservationButton.setBounds(10, 160, 180, 40);
 
         reservationPanel.add(movieLabel);
         reservationPanel.add(theaterLabel);
@@ -256,9 +296,16 @@ public class BookingScreen extends JFrame {
                 timeLabel.getText().equals("시간 : ")) {
                 JOptionPane.showMessageDialog(this, "모든 항목을 선택해야 합니다.", "경고", JOptionPane.WARNING_MESSAGE);
             } else {
-                new SeatScreen().setVisible(true);
+            	try {
+					schedule = scheduleDAO.getAllScheduleDateAndTime(selectedStartDate,selectedStartTime);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                new SeatScreen(schedule).setVisible(true);
                 dispose();
             }
+           
         });
 
     }
@@ -280,19 +327,25 @@ public class BookingScreen extends JFrame {
     }
 
     public void loadStartDate() throws SQLException {
-        startDates = scheduleDAO.getAllScheduleDate();
-        for (String startDate : startDates) {
-            listModel3.addElement(startDate);
-        }
-        datelist = new JList<>(listModel3);
+    	listModel3.clear();
+    	theater = null;
+    	movie = null;
+    	if(selectedTheaterName != null && selectedMovieTitle != null) {
+    		theater = theaterDAO.getTheaterByName(selectedTheaterName);
+    		movie = movieDAO.getMovieByTitle(selectedMovieTitle);
+    		startDates = scheduleDAO.getSchedulesByTheaterAndMovie(theater.getTheaterID(), movie.getMovieID());
+            for (Schedule startDate : startDates) {
+                listModel3.addElement(startDate.getStartDate().toString());
+            }
+    	}
     }
 
     public void loadStartTime() throws SQLException {
-        startTimes = scheduleDAO.getAllScheduleTime();
-        for (String startTime : startTimes) {
-            listModel4.addElement(startTime);
+        startTimes = scheduleDAO.getSchedulesByTheaterAndMovieAndDate(theater.getTheaterID(), movie.getMovieID(), selectedStartDate);
+        listModel4.clear();
+        for (Schedule startTime : startTimes) {
+            listModel4.addElement(startTime.getStartTime().toString());
         }
-        timelist = new JList<>(listModel4);
     }
 
     public static void main(String[] args) {

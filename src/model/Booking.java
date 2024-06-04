@@ -12,6 +12,16 @@ public class Booking {
 
     public Booking() {}
 
+    public Booking( String paymentMethod, String paymentStatus, int amount, String customerID, Date paymentDate) {
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.amount = amount;
+        this.customerID = customerID;
+        this.paymentDate = paymentDate;
+    }
+
+    
+    
     public Booking(int bookingID, String paymentMethod, String paymentStatus, int amount, String customerID, Date paymentDate) {
         this.bookingID = bookingID;
         this.paymentMethod = paymentMethod;
@@ -68,4 +78,9 @@ public class Booking {
     public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
     }
+    
+    
+    
+    
+    
 }

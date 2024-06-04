@@ -17,7 +17,6 @@ import javax.swing.SwingUtilities;
 
 import dao.CustomerDAO;
 import model.AllMovieInfo;
-import model.AllMovieInfos;
 import model.Customer;
 
 
@@ -27,13 +26,13 @@ public class LoginScreen extends JFrame {
     private JButton loginButton;
     private CustomerDAO customerDAO = new CustomerDAO();
     private String userOrAdmin;
-    private JButton backButton = new JButton("Back");
+    private JButton backButton = new JButton("뒤로가기");
     
     
     public LoginScreen(String userOrAdmin) {
-    	this.userOrAdmin =userOrAdmin;
-    	
-        setTitle("Login");
+       this.userOrAdmin =userOrAdmin;
+       
+        setTitle("로그인");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -41,16 +40,16 @@ public class LoginScreen extends JFrame {
         
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        backButton.setBounds(10,120,80,30);
+        backButton.setBounds(10,120,100,30);
         panel.add(backButton);
         
         backButton.addActionListener(e->{
-        	new AdminOrUserScreen().setVisible(true);
-        	dispose();
+           new AdminOrUserScreen().setVisible(true);
+           dispose();
         });
         
 
-        JLabel userLabel = new JLabel("User");
+        JLabel userLabel = new JLabel("아이디");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
@@ -58,7 +57,7 @@ public class LoginScreen extends JFrame {
         usernameField.setBounds(100, 20, 165, 25);
         panel.add(usernameField);
 
-        JLabel passwordLabel = new JLabel("Password");
+        JLabel passwordLabel = new JLabel("패스워드");
         passwordLabel.setBounds(10, 50, 80, 25);
         panel.add(passwordLabel);
         
@@ -69,15 +68,15 @@ public class LoginScreen extends JFrame {
         panel.add(passwordField);
         
         if(userOrAdmin.equals("User")) {
-        	usernameField.setText("user1");
-        	passwordField.setText("user1");
+           usernameField.setText("user1");
+           passwordField.setText("user1");
         }
         else {
-        	usernameField.setText("root");
-        	passwordField.setText("1234");
+           usernameField.setText("root");
+           passwordField.setText("1234");
         }
 
-        loginButton = new JButton("Login");
+        loginButton = new JButton("로그인");
         loginButton.setBounds(10, 80, 80, 25);
         panel.add(loginButton);
 
@@ -112,18 +111,17 @@ public class LoginScreen extends JFrame {
             Customer customer = customerDAO.authenticate(username, password);
 
             if (customer != null) {
-                JOptionPane.showMessageDialog(this, "Login Successful!");
-             
+                JOptionPane.showMessageDialog(this, "로그인 성공!");
                 AllMovieInfo.customer=customer;
                 if(userOrAdmin.equals("User")) new MainMenuScreen(customer).setVisible(true);
                 else new AdminPanel().setVisible(true);
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "이름 혹은 패스워드를 정확하게 입력해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Database error.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "데이터베이스 오류.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

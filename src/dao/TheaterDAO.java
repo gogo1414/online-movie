@@ -68,6 +68,26 @@ public class TheaterDAO {
 
         return theater;
     }
+    
+    public Theater getTheaterByName(String theaterName) throws SQLException {
+        Theater theater = null;
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM theaters WHERE TheaterName = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, theaterName);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            theater = new Theater();
+            theater.setTheaterID(rs.getInt("TheaterID"));
+            theater.setSeatCount(rs.getInt("SeatCount"));
+            theater.setTheaterName(rs.getString("TheaterName"));
+            theater.setActive(rs.getBoolean("IsActive"));
+            theater.setWidth(rs.getInt("Width"));
+            theater.setHeight(rs.getInt("Height"));
+        }
+
+        return theater;
+    }
 
     public void addTheater(Theater theater) throws SQLException {
         Connection conn = DBConnection.getConnection();
@@ -81,20 +101,7 @@ public class TheaterDAO {
         stmt.setInt(6, theater.getHeight());
         stmt.executeUpdate();
     }
-
-    public void updateTheater(Theater theater) throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        String query = "UPDATE theaters SET SeatCount = ?, IsActive = ?, TheaterName = ?, Width = ?, Height = ? WHERE TheaterID = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, theater.getSeatCount());
-        stmt.setBoolean(2, theater.isActive());
-        stmt.setString(3, theater.getTheaterName());
-        stmt.setBoolean(4, theater.isActive());
-        stmt.setInt(5, theater.getWidth());
-        stmt.setInt(6, theater.getHeight());
-        stmt.executeUpdate();
-    }
-
+    
     public void deleteTheater(int theaterID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM theaters WHERE TheaterID = ?";

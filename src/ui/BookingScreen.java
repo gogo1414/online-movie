@@ -101,11 +101,12 @@ public class BookingScreen extends JFrame {
         backButton.setBounds(50, 800, 100, 70);
         mainPanel.add(backButton);
         backButton.addActionListener(e -> {
-            new MovieDetailsScreen(AllMovieInfo.movie).setVisible(true);
+            new MovieDetailsScreen(AllMovieInfo.movie,AllMovieInfo.catalog).setVisible(true);
             dispose();
         });
 
         add(mainPanel);
+        
     }
 
     private void showDBList(String name) throws SQLException {

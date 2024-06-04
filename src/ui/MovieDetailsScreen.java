@@ -10,14 +10,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import find_catalog.DuplicateScreen;
 import find_catalog.MovieListScreen;
+import find_catalog.MovieListScreen2;
 import model.AllMovieInfo;
 import model.Movie;
 
 public class MovieDetailsScreen extends JFrame {
     private Movie movie;
-
-    public MovieDetailsScreen(Movie movie) {
+    private String catalouge;
+    public MovieDetailsScreen(Movie movie, String catalogue) {
+    	this.catalouge=catalogue;
     	AllMovieInfo.movie = movie;
         this.movie = movie;
 
@@ -37,7 +40,7 @@ public class MovieDetailsScreen extends JFrame {
         JLabel releaseDateLabel = new JLabel("영화 개봉일: " + movie.getReleaseDate());
         JLabel scoreLabel = new JLabel("평점 : " + movie.getScore());
 
-        JButton bookButton = new JButton("Book Movie");
+        JButton bookButton = new JButton("예매하기");
         bookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,11 +54,14 @@ public class MovieDetailsScreen extends JFrame {
             }
         });
         
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton("뒤로가기");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MovieListScreen(MovieListScreen.catalogue).setVisible(true);
+            	if(catalogue=="영화명")  new MovieListScreen(catalogue).setVisible(true);
+            	else {
+            		new DuplicateScreen(catalogue , AllMovieInfo.whatIsIt).setVisible(true);
+            	}
                 dispose();
             }
         });

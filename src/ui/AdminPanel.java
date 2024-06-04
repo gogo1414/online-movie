@@ -32,6 +32,7 @@ public class AdminPanel extends JFrame {
                 initializeDatabase();
             }
         });
+        
         JButton viewButton = new JButton("전체 테이블 보기");
         viewButton.addActionListener(new ActionListener() {
             @Override
@@ -39,9 +40,17 @@ public class AdminPanel extends JFrame {
                 showAllTablesWindow();
             }
         });
+        
         buttonPanel.add(dbInitButton);
         buttonPanel.add(viewButton);
 
+        JButton logoutButton = new JButton("로그아웃");
+        logoutButton.addActionListener(e->{
+        	new AdminOrUserScreen().setVisible(true);
+        	dispose();
+        });
+        
+        buttonPanel.add(logoutButton);
         // SQL 입력 패널
         JPanel sqlPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

@@ -51,6 +51,91 @@ public class MovieDAO {
 
         return movies;
     }
+    									//Actors , 이동호
+    public List<Movie> getSpecialActorMovies( String whatIsIt) throws SQLException {
+    	
+        List<Movie> movies = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM movies WHERE Actors = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, whatIsIt);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Movie movie = new Movie();
+            movie.setMovieID(rs.getInt("MovieID"));
+            movie.setTitle(rs.getString("Title"));
+            movie.setDuration(rs.getString("Duration"));
+            movie.setRating(rs.getString("Rating"));
+            movie.setDirector(rs.getString("Director"));
+            movie.setActors(rs.getString("Actors"));
+            movie.setGenre(rs.getString("Genre"));
+            movie.setStory(rs.getString("Story"));
+            movie.setReleaseDate(rs.getDate("ReleaseDate"));
+            movie.setScore(rs.getInt("Score"));
+            movies.add(movie);
+        }
+
+        return movies;
+    }
+    
+ public List<Movie> getSpecialGenreMovies( String whatIsIt) throws SQLException {
+    	
+        List<Movie> movies = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM movies WHERE Genre = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, whatIsIt);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Movie movie = new Movie();
+            movie.setMovieID(rs.getInt("MovieID"));
+            movie.setTitle(rs.getString("Title"));
+            movie.setDuration(rs.getString("Duration"));
+            movie.setRating(rs.getString("Rating"));
+            movie.setDirector(rs.getString("Director"));
+            movie.setActors(rs.getString("Actors"));
+            movie.setGenre(rs.getString("Genre"));
+            movie.setStory(rs.getString("Story"));
+            movie.setReleaseDate(rs.getDate("ReleaseDate"));
+            movie.setScore(rs.getInt("Score"));
+            movies.add(movie);
+        }
+
+        return movies;
+    }
+    
+ public List<Movie> getSpecialDirectorMovies( String whatIsIt) throws SQLException {
+ 	
+     List<Movie> movies = new ArrayList<>();
+     Connection conn = DBConnection.getConnection();
+     String query = "SELECT * FROM movies WHERE Director = ?";
+     PreparedStatement stmt = conn.prepareStatement(query);
+     stmt.setString(1, whatIsIt);
+     ResultSet rs = stmt.executeQuery();
+
+     while (rs.next()) {
+         Movie movie = new Movie();
+         movie.setMovieID(rs.getInt("MovieID"));
+         movie.setTitle(rs.getString("Title"));
+         movie.setDuration(rs.getString("Duration"));
+         movie.setRating(rs.getString("Rating"));
+         movie.setDirector(rs.getString("Director"));
+         movie.setActors(rs.getString("Actors"));
+         movie.setGenre(rs.getString("Genre"));
+         movie.setStory(rs.getString("Story"));
+         movie.setReleaseDate(rs.getDate("ReleaseDate"));
+         movie.setScore(rs.getInt("Score"));
+         movies.add(movie);
+     }
+
+     return movies;
+ }
+ 
+    
+    
+    
 
     public Movie getMovieByID(int movieID) throws SQLException {
         Movie movie = null;

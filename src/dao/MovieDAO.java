@@ -16,14 +16,19 @@ public class MovieDAO {
 	public List<String> getAllMoviesName() throws SQLException {
         List<String> moviesName = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT Title FROM movies";
+        String query = "SELECT Title FROM movies WHERE ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setDate(1, Date.valueOf("2024-06-07"));
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
         	String name = rs.getString("Title");
             moviesName.add(name);
         }
+        rs.close();
+        stmt.close();
+        conn.close();
+
 
         return moviesName;
     }
@@ -59,7 +64,9 @@ public class MovieDAO {
 	        conn.close();
 
 	        return movies;
-	    }							//Actors , 이동호
+	    }			
+	 
+	  
     public List<Movie> getSpecialActorMovies( String whatIsIt) throws SQLException {
     	
         List<Movie> movies = new ArrayList<>();

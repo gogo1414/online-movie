@@ -32,6 +32,7 @@ import model.Ticket;
 
 public class SeatScreen extends JFrame {
     
+	
     private Booking booking;
     private Ticket ticket;
     private Theater theater;

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,31 +28,38 @@ public class MovieDAO {
         return moviesName;
     }
 
-    public List<Movie> getAllMovies() throws SQLException {
-        List<Movie> movies = new ArrayList<>();
-        Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        ResultSet rs = stmt.executeQuery();
+	  public List<Movie> getAllMovies() throws SQLException {
+	        List<Movie> movies = new ArrayList<>();
+	        Connection conn = DBConnection.getConnection();
+	        String query = "SELECT * FROM movies WHERE ReleaseDate > ?";
+	        PreparedStatement stmt = conn.prepareStatement(query);
 
-        while (rs.next()) {
-            Movie movie = new Movie();
-            movie.setMovieID(rs.getInt("MovieID"));
-            movie.setTitle(rs.getString("Title"));
-            movie.setDuration(rs.getString("Duration"));
-            movie.setRating(rs.getString("Rating"));
-            movie.setDirector(rs.getString("Director"));
-            movie.setActors(rs.getString("Actors"));
-            movie.setGenre(rs.getString("Genre"));
-            movie.setStory(rs.getString("Story"));
-            movie.setReleaseDate(rs.getDate("ReleaseDate"));
-            movie.setScore(rs.getInt("Score"));
-            movies.add(movie);
-        }
+	        // 2024년 6월 7일 이전의 영화만 필터링하기 위해 날짜 설정
+	        stmt.setDate(1, Date.valueOf("2024-06-07"));
 
-        return movies;
-    }
-    									//Actors , 이동호
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            Movie movie = new Movie();
+	            movie.setMovieID(rs.getInt("MovieID"));
+	            movie.setTitle(rs.getString("Title"));
+	            movie.setDuration(rs.getString("Duration"));
+	            movie.setRating(rs.getString("Rating"));
+	            movie.setDirector(rs.getString("Director"));
+	            movie.setActors(rs.getString("Actors"));
+	            movie.setGenre(rs.getString("Genre"));
+	            movie.setStory(rs.getString("Story"));
+	            movie.setReleaseDate(rs.getDate("ReleaseDate"));
+	            movie.setScore(rs.getInt("Score"));
+	            movies.add(movie);
+	        }
+
+	        rs.close();
+	        stmt.close();
+	        conn.close();
+
+	        return movies;
+	    }							//Actors , 이동호
     public List<Movie> getSpecialActorMovies( String whatIsIt) throws SQLException {
     	
         List<Movie> movies = new ArrayList<>();

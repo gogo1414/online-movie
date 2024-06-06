@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,6 +22,7 @@ import dao.BookingDAO;
 import dao.MovieDAO;
 import dao.ScheduleDAO;
 import dao.SeatDAO;
+import dao.TheaterDAO;
 import dao.TicketDAO;
 import model.AllMovieInfo;
 import model.Booking;
@@ -33,6 +35,7 @@ import model.Ticket;
 public class BookingHistoryScreen extends JFrame {
     private Customer customer;
     private BookingDAO bookingDAO;
+    private TheaterDAO theaterDAO;
     private TicketDAO ticketDAO;
     private ScheduleDAO scheduleDAO;
     private MovieDAO movieDAO;
@@ -42,6 +45,9 @@ public class BookingHistoryScreen extends JFrame {
     private JButton cancelButton;
     private JButton modifyButton; // 예약 변경 버튼
     private JButton backButton;
+    
+    private int theaterID;
+    private String seatID;
 
     public BookingHistoryScreen(Customer customer) {
         this.customer = customer;
@@ -50,6 +56,7 @@ public class BookingHistoryScreen extends JFrame {
         scheduleDAO = new ScheduleDAO();
         movieDAO = new MovieDAO();
         seatDAO = new SeatDAO();
+        theaterDAO = new TheaterDAO();
 
         setTitle("예매 내역");
         setSize(800, 400);
@@ -83,6 +90,8 @@ public class BookingHistoryScreen extends JFrame {
                 int selectedRow = bookingTable.getSelectedRow();
                 if (selectedRow != -1) {
                     int bookingID = (int) tableModel.getValueAt(selectedRow, 0);
+                    theaterID = (int) tableModel.getValueAt(selectedRow, 3);
+                    seatID = (String) tableModel.getValueAt(selectedRow, 4);
                     cancelBooking(bookingID);
                 } else {
                     JOptionPane.showMessageDialog(BookingHistoryScreen.this, "취소할 예약을 선택하세요.", "경고", JOptionPane.WARNING_MESSAGE);
@@ -156,6 +165,8 @@ public class BookingHistoryScreen extends JFrame {
 
     private void cancelBooking(int bookingID) {
         try {
+        	seatDAO.updateSeatOccupiedStatus(seatID, theaterID, false);
+        	theaterDAO.increaseSeatCount(theaterID);
             bookingDAO.deleteBooking(bookingID);
             JOptionPane.showMessageDialog(this, "예약 취소 성공.");
             int selectedRow = bookingTable.getSelectedRow();

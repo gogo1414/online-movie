@@ -15,11 +15,13 @@ import util.DBConnection;
 
 public class ScheduleDAO {
 	
-	public List<String> getAllScheduleDate() throws SQLException {
+	public List<String> getAllScheduleDateByTheaterAndMovie(int theaterID, int movieID) throws SQLException {
         List<String> theatersName = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT StartDate FROM schedules ORDER BY ASCENDING";
+        String query = "SELECT DISTINCT StartDate FROM schedules WHERE TheaterID = ? AND MovieID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, theaterID);
+        stmt.setInt(2, movieID);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
@@ -30,11 +32,13 @@ public class ScheduleDAO {
         return theatersName;
     }
 	
-	public List<String> getAllScheduleTime() throws SQLException {
+	public List<String> getScheduleTimeByTheaterAndMovie(int theaterID, int movieID) throws SQLException {
         List<String> theatersName = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT StartTime FROM schedules ORDER BY ASCENDING";
+        String query = "SELECT DISTINCT StartTime FROM schedules WHERE TheaterID = ? AND MovieID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, theaterID);
+        stmt.setInt(2, movieID);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
@@ -48,7 +52,7 @@ public class ScheduleDAO {
     public List<Schedule> getSchedulesByTheaterAndMovie(int theaterID, int movieID) throws SQLException {
         List<Schedule> schedules = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM schedules WHERE TheaterID = ? AND MovieID = ? ";
+        String query = "SELECT * FROM schedules WHERE TheaterID = ? AND MovieID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, theaterID);
         stmt.setInt(2, movieID);

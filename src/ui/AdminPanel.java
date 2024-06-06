@@ -176,18 +176,18 @@ public class AdminPanel extends JFrame {
         	    "('12', 'user11', '0987654311', 'admin11@example.com', 0, 'user11');",
 
         	    "INSERT INTO movies (Title, Duration, Rating, Director, Actors, Genre, Story, ReleaseDate, Score) VALUES " +
-        	    "('Movie 1', '120 min', 'PG-13', 'Director 1', '김준수', 'Action', 'Story 1', '2023-01-15', 85), " +
-        	    "('Movie 2', '110 min', 'R', 'Director 2', '이동호', 'Horror', 'Story 2', '2023-02-12', 78), " +
-        	    "('Movie 3', '130 min', 'PG', 'Director 3', '홍길동', 'Comedy', 'Story 3', '2023-03-05', 88), " +
-        	    "('Movie 4', '140 min', 'PG-13', 'Director 4', '김준수', 'Drama', 'Story 4', '2023-04-10', 92), " +
-        	    "('Movie 5', '125 min', 'R', 'Director 5', '이동호', 'Thriller', 'Story 5', '2023-05-20', 76), " +
-        	    "('Movie 6', '115 min', 'PG', 'Director 6', '홍길동', 'Adventure', 'Story 6', '2023-06-18', 80), " +
-        	    "('Movie 7', '100 min', 'PG', 'Director 7', '김준수', 'Animation', 'Story 7', '2023-07-22', 90), " +
-        	    "('Movie 8', '135 min', 'R', 'Director 8', '이동호', 'Sci-Fi', 'Story 8', '2023-08-30', 87), " +
-        	    "('Movie 9', '145 min', 'PG-13', 'Director 9', '홍길동', 'Fantasy', 'Story 9', '2023-09-12', 83), " +
-        	    "('Movie 10', '120 min', 'R', 'Director 10', '김준수', 'Mystery', 'Story 10', '2023-10-08', 79), " +
-        	    "('Movie 11', '110 min', 'PG-13', 'Director 11', '이동호', 'Romance', 'Story 11', '2023-11-16', 81), " +
-        	    "('Movie 12', '105 min', 'PG', 'Director 12', '홍길동', 'Family', 'Story 12', '2023-12-25', 84);",
+        	    "('Movie 1', '120 min', 'PG-13', 'Director 1', '김준수', 'Action', 'Story 1', '2024-01-15', 85), " +
+        	    "('Movie 2', '110 min', 'R', 'Director 2', '이동호', 'Horror', 'Story 2', '2024-02-12', 78), " +
+        	    "('Movie 3', '130 min', 'PG', 'Director 3', '홍길동', 'Comedy', 'Story 3', '2024-03-05', 88), " +
+        	    "('Movie 4', '140 min', 'PG-13', 'Director 4', '김준수', 'Drama', 'Story 4', '2024-04-10', 92), " +
+        	    "('Movie 5', '125 min', 'R', 'Director 5', '이동호', 'Thriller', 'Story 5', '2024-05-20', 76), " +
+        	    "('Movie 6', '115 min', 'PG', 'Director 6', '홍길동', 'Adventure', 'Story 6', '2024-06-18', 80), " +
+        	    "('Movie 7', '100 min', 'PG', 'Director 7', '김준수', 'Animation', 'Story 7', '2024-07-22', 90), " +
+        	    "('Movie 8', '135 min', 'R', 'Director 8', '이동호', 'Sci-Fi', 'Story 8', '2024-08-30', 87), " +
+        	    "('Movie 9', '145 min', 'PG-13', 'Director 9', '홍길동', 'Fantasy', 'Story 9', '2024-09-12', 83), " +
+        	    "('Movie 10', '120 min', 'R', 'Director 10', '김준수', 'Mystery', 'Story 10', '2024-10-08', 79), " +
+        	    "('Movie 11', '110 min', 'PG-13', 'Director 11', '이동호', 'Romance', 'Story 11', '2024-11-16', 81), " +
+        	    "('Movie 12', '105 min', 'PG', 'Director 12', '홍길동', 'Family', 'Story 12', '2024-12-25', 84);",
 
         	    "INSERT INTO theaters (SeatCount, TheaterName, IsActive, Width, Height) VALUES " +
 	            "(98, '1대입구', 1, 10, 10), " +
@@ -351,18 +351,18 @@ public class AdminPanel extends JFrame {
         	    "('J1', 12, 0), ('J2', 12, 0), ('J3', 12, 0), ('J4', 12, 0), ('J5', 12, 0), ('J6', 12, 0), ('J7', 12, 0), ('J8', 12, 0), ('J9', 12, 0), ('J10', 12, 0);",
 
         	    "INSERT INTO bookings (PaymentMethod, PaymentStatus, Amount, CustomerID, PaymentDate) VALUES " +
-        	    "('Card', '1', 10000, '2', '2023-01-10'), " +
-        	    "('Card', '1', 10000, '2', '2023-02-15'), " +
-        	    "('Cash', '1', 10000, '2', '2023-03-20'), " +
-        	    "('Card', '1', 10000, '4', '2023-04-25'), " +
-        	    "('Card', '1', 10000, '6', '2023-05-30'), " +
-        	    "('Card', '1', 10000, '7', '2023-06-05'), " +
-        	    "('Cash', '1', 10000, '2', '2023-07-10'), " +
-        	    "('Cash', '1', 10000, '2', '2023-08-15'), " +
-        	    "('Cash', '1', 10000, '9', '2023-09-20'), " +
-        	    "('Card', '1', 10000, '10', '2023-10-25'), " +
-        	    "('Cash', '1', 10000, '11', '2023-11-30'), " +
-        	    "('Cash', '1', 10000, '12', '2023-12-05');",
+        	    "('Card', '1', 10000, '2', '2024-06-07'), " +
+        	    "('Card', '1', 10000, '2', '2024-06-07'), " +
+        	    "('Cash', '1', 10000, '2', '2024-06-07'), " +
+        	    "('Card', '1', 10000, '4', '2024-06-07'), " +
+        	    "('Card', '1', 10000, '6', '2024-06-07'), " +
+        	    "('Card', '1', 10000, '7', '2024-06-07'), " +
+        	    "('Cash', '1', 10000, '2', '2024-06-07'), " +
+        	    "('Cash', '1', 10000, '2', '2024-06-07'), " +
+        	    "('Cash', '1', 10000, '9', '2024-06-07'), " +
+        	    "('Card', '1', 10000, '10', '2024-06-07'), " +
+        	    "('Cash', '1', 10000, '11', '2024-06-07'), " +
+        	    "('Cash', '1', 10000, '12', '2024-06-07');",
 
         	    "INSERT INTO tickets (ScheduleID, TheaterID, SeatID, BookingID, IsIssued, StandardPrice, SalePrice) VALUES " +
         	    "(1, 1, 'A1', 1, 1, 10000, 10000), " +

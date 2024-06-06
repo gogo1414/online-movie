@@ -181,22 +181,15 @@ public class SeatScreen extends JFrame {
         } else if (selectedMethod == null) {
             JOptionPane.showMessageDialog(this, "결제 방법을 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
         } else {
+        	
             processReservation();
         }
     }
-
+    
     private void processReservation() {
         JOptionPane.showMessageDialog(this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
-        if (AllMovieInfo.changeReservation == 1) {
-            try {
-            	Ticket ticket = ticketDao.getTicketByBookingID(AllMovieInfo.bookingID);
-            	seatDao.updateSeatOccupiedStatus(ticket.getSeatID(), ticket.getScheduleID(), false);
-                bookingDao.deleteBooking(AllMovieInfo.bookingID);
-                AllMovieInfo.changeReservation = 0;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+       
+        System.out.println("fuck*********************************");
         makeDate();
         booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
         try {

@@ -106,6 +106,7 @@ public class BookingScreen extends JFrame {
         	if(AllMovieInfo.changeReservation==1) {
         		JOptionPane.showMessageDialog(BookingScreen.this, "예약 변경을 완료해주세요", "오류", JOptionPane.ERROR_MESSAGE);
         	}
+        	
         	else {
             new MovieDetailsScreen(AllMovieInfo.movie, AllMovieInfo.catalog).setVisible(true);
             dispose();

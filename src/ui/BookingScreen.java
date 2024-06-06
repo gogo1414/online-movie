@@ -59,7 +59,7 @@ public class BookingScreen extends JFrame {
     private DefaultListModel<String> listModel2 = new DefaultListModel<>();
     private JList<String> theaterlist;
 
-    private List<Schedule> startDates;
+    private List<String> startDates;
     private DefaultListModel<String> listModel3 = new DefaultListModel<>();
     private JList<String> datelist = new JList<>(listModel3);
 
@@ -347,9 +347,9 @@ public class BookingScreen extends JFrame {
     	if (selectedTheaterName != null && selectedMovieTitle != null) {
     		theater = theaterDAO.getTheaterByName(selectedTheaterName);
     		movie = movieDAO.getMovieByTitle(selectedMovieTitle);
-    		startDates = scheduleDAO.getSchedulesByTheaterAndMovie(theater.getTheaterID(), movie.getMovieID());
-            for (Schedule startDate : startDates) {
-                listModel3.addElement(startDate.getStartDate().toString());
+    		startDates = scheduleDAO.getAllScheduleDateByTheaterAndMovie(theater.getTheaterID(), movie.getMovieID());
+            for (String startDate : startDates) {
+                listModel3.addElement(startDate);
             }
     	}
     }

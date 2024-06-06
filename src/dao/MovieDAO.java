@@ -71,9 +71,10 @@ public class MovieDAO {
     	
         List<Movie> movies = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies WHERE Actors = ?";
+        String query = "SELECT * FROM movies WHERE Actors = ? AND ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, whatIsIt);
+        stmt.setDate(2, Date.valueOf("2024-06-07"));
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
@@ -98,9 +99,10 @@ public class MovieDAO {
     	
         List<Movie> movies = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies WHERE Genre = ?";
+        String query = "SELECT * FROM movies WHERE Genre = ?  AND ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, whatIsIt);
+        stmt.setDate(2, Date.valueOf("2024-06-07"));
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
@@ -125,9 +127,10 @@ public class MovieDAO {
  	
      List<Movie> movies = new ArrayList<>();
      Connection conn = DBConnection.getConnection();
-     String query = "SELECT * FROM movies WHERE Director = ?";
+     String query = "SELECT * FROM movies WHERE Director = ?  AND ReleaseDate > ?";
      PreparedStatement stmt = conn.prepareStatement(query);
      stmt.setString(1, whatIsIt);
+     stmt.setDate(2, Date.valueOf("2024-06-07"));
      ResultSet rs = stmt.executeQuery();
 
      while (rs.next()) {
@@ -205,9 +208,13 @@ public class MovieDAO {
     public Movie getMovieByTitle(String title) throws SQLException {
         Movie movie = null;
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies WHERE Title = ?";
+        String query = "SELECT * FROM movies WHERE Title = ? AND ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, title);
+        
+        // 2024년 6월 7일 이후의 영화를 필터링하기 위해 날짜 설정
+        stmt.setDate(2, Date.valueOf("2024-06-07"));
+
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
@@ -224,15 +231,20 @@ public class MovieDAO {
             movie.setScore(rs.getInt("Score"));
         }
 
+        rs.close();
+        stmt.close();
+        conn.close();
+
         return movie;
     }
     
     public Movie getMovieByActor(String actor) throws SQLException {
         Movie movie = null;
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies WHERE Actors = ?";
+        String query = "SELECT * FROM movies WHERE Actors = ? AND ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, actor);
+        stmt.setDate(2, Date.valueOf("2024-06-07"));
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
@@ -255,9 +267,10 @@ public class MovieDAO {
     public Movie getMovieByGenre(String genre) throws SQLException {
         Movie movie = null;
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies WHERE Genre = ?";
+        String query = "SELECT * FROM movies WHERE Genre = ? AND ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, genre);
+        stmt.setDate(2, Date.valueOf("2024-06-07"));
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
@@ -280,9 +293,10 @@ public class MovieDAO {
     public Movie getMovieByDirector(String director) throws SQLException {
         Movie movie = null;
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM movies WHERE Director = ?";
+        String query = "SELECT * FROM movies WHERE Director = ? AND ReleaseDate > ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, director);
+        stmt.setDate(2, Date.valueOf("2024-06-07"));
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {

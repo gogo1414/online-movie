@@ -162,8 +162,8 @@ public class AdminPanel extends JFrame {
             // 데이터 삽입
             String[] dataInsertionQueries = new String[] {
             	    "INSERT INTO customers (CustomerID, Name, Phone, Email, IsAdmin, Password) VALUES" +
-            	    "('1', 'root', '12customers34567890', 'john@example.com', 0, '1234')," +
-            	    "('2', 'user1', '0987654321', 'admin@example.com', 1, 'user1');",
+            	    "('1', 'root', '12customers34567890', 'john@example.com', 1, '1234')," +
+            	    "('2', 'user1', '0987654321', 'admin@example.com', 0, 'user1');",
 
             	    "INSERT INTO movies (Title, Duration, Rating, Director, Actors, Genre, Story, ReleaseDate, Score) VALUES" +
             	    "('Movie 1', '120 min', 'PG-13', 'Director 1', '김준수', 'Action', 'Story 1', '2023-01-15', 85)," +

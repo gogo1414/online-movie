@@ -113,7 +113,7 @@ public class LoginScreen extends JFrame {
             if (customer != null) {
                 JOptionPane.showMessageDialog(this, "로그인 성공!");
                 AllMovieInfo.customer=customer;
-                if(userOrAdmin.equals("User")) new MainMenuScreen(customer).setVisible(true);
+                if(!customer.isAdmin()) new MainMenuScreen(customer).setVisible(true);
                 else new AdminPanel().setVisible(true);
                 dispose();
             } else {

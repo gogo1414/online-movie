@@ -23,6 +23,7 @@ public class SeatDAO {
         while (rs.next()) {
             Seat seat = new Seat();
             seat.setSeatID(rs.getString("SeatID"));
+            seat.setScheduleID(rs.getInt("ScheduleID"));
             seat.setTheaterID(rs.getInt("TheaterID"));
             seat.setOccupied(rs.getBoolean("IsOccupied"));
             seats.add(seat);
@@ -42,6 +43,7 @@ public class SeatDAO {
         while (rs.next()) {
             Seat seat = new Seat();
             seat.setSeatID(rs.getString("SeatID"));
+            seat.setScheduleID(rs.getInt("ScheduleID"));
             seat.setTheaterID(rs.getInt("TheaterID"));
             seat.setOccupied(rs.getBoolean("IsOccupied"));
             seats.add(seat);
@@ -62,6 +64,7 @@ public class SeatDAO {
         if (rs.next()) {
             seat = new Seat();
             seat.setSeatID(rs.getString("SeatID"));
+            seat.setScheduleID(rs.getInt("ScheduleID"));
             seat.setTheaterID(rs.getInt("TheaterID"));
             seat.setOccupied(rs.getBoolean("IsOccupied"));
         }
@@ -80,6 +83,7 @@ public class SeatDAO {
         if (rs.next()) {
             seat = new Seat();
             seat.setSeatID(rs.getString("SeatID"));
+            seat.setScheduleID(rs.getInt("ScheduleID"));
             seat.setTheaterID(rs.getInt("TheaterID"));
             seat.setOccupied(rs.getBoolean("IsOccupied"));
         }
@@ -97,13 +101,13 @@ public class SeatDAO {
         stmt.executeUpdate();
     }
 
-    public void updateSeatOccupiedStatus(String seatID, int theaterID, boolean isOccupied) throws SQLException {
+    public void updateSeatOccupiedStatus(String seatID, int scheduleID, boolean isOccupied) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        String query = "UPDATE seats SET IsOccupied = ? WHERE SeatID = ? AND TheaterID = ?";
+        String query = "UPDATE seats SET IsOccupied = ? WHERE SeatID = ? AND ScheduleID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setBoolean(1, isOccupied);
         stmt.setString(2, seatID);
-        stmt.setInt(3, theaterID);
+        stmt.setInt(3, scheduleID);
         stmt.executeUpdate();
     }
     

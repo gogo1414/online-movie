@@ -9,27 +9,24 @@ public class Schedule {
     private int theaterID;
     private Date startDate;
     private String weekday;
-    private int showNumber;
     private Time startTime;
 
     public Schedule() {}
     
-    public Schedule(int movieID, int theaterID, Date startDate, String weekday, int showNumber, Time startTime) {
+    public Schedule(int movieID, int theaterID, Date startDate, String weekday, Time startTime) {
         this.movieID = movieID;
         this.theaterID = theaterID;
         this.startDate = startDate;
         this.weekday = weekday;
-        this.showNumber = showNumber;
         this.startTime = startTime;
     }
 
-    public Schedule(int scheduleID, int movieID, int theaterID, Date startDate, String weekday, int showNumber, Time startTime) {
+    public Schedule(int scheduleID, int movieID, int theaterID, Date startDate, String weekday, Time startTime) {
         this.scheduleID = scheduleID;
         this.movieID = movieID;
         this.theaterID = theaterID;
         this.startDate = startDate;
         this.weekday = weekday;
-        this.showNumber = showNumber;
         this.startTime = startTime;
     }
 
@@ -71,14 +68,6 @@ public class Schedule {
 
     public void setWeekday(String weekday) {
         this.weekday = weekday;
-    }
-
-    public int getShowNumber() {
-        return showNumber;
-    }
-
-    public void setShowNumber(int showNumber) {
-        this.showNumber = showNumber;
     }
 
     public Time getStartTime() {

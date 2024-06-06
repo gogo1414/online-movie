@@ -154,7 +154,7 @@ public class BookingHistoryScreen extends JFrame {
                     booking.getBookingID(),
                     movie.getTitle(),
                     schedule.getStartDate() + " " + schedule.getStartTime(),
-                    schedule.getShowNumber(),
+                    schedule.getTheaterID(),
                     seat.getSeatID(),
                     ticket.getSalePrice()
                 });
@@ -204,7 +204,7 @@ public class BookingHistoryScreen extends JFrame {
                 "예약 번호: " + booking.getBookingID() +
                 "\n영화명: " + movie.getTitle() +
                 "\n상영 날짜: " + schedule.getStartDate() + " " + schedule.getStartTime() +
-                "\n상영관: " + schedule.getShowNumber() +
+                "\n상영관: " + schedule.getTheaterID() +
                 "\n좌석 위치: " + seat.getSeatID() +
                 "\n결제 금액: " + ticket.getSalePrice() +
                 "\n결제 방법: " + booking.getPaymentMethod() +

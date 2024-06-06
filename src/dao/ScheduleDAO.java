@@ -65,7 +65,6 @@ public class ScheduleDAO {
             schedule.setTheaterID(rs.getInt("TheaterID"));
             schedule.setStartDate(rs.getDate("StartDate"));
             schedule.setWeekday(rs.getString("Weekday"));
-            schedule.setShowNumber(rs.getInt("ShowNumber"));
             schedule.setStartTime(rs.getTime("StartTime"));
             schedules.add(schedule);
         }
@@ -90,7 +89,6 @@ public class ScheduleDAO {
             schedule.setTheaterID(rs.getInt("TheaterID"));
             schedule.setStartDate(rs.getDate("StartDate"));
             schedule.setWeekday(rs.getString("Weekday"));
-            schedule.setShowNumber(rs.getInt("ShowNumber"));
             schedule.setStartTime(rs.getTime("StartTime"));
             schedules.add(schedule);
         }
@@ -112,7 +110,6 @@ public class ScheduleDAO {
             schedule.setTheaterID(rs.getInt("TheaterID"));
             schedule.setStartDate(rs.getDate("StartDate"));
             schedule.setWeekday(rs.getString("Weekday"));
-            schedule.setShowNumber(rs.getInt("ShowNumber"));
             schedule.setStartTime(rs.getTime("StartTime"));
         }
 
@@ -134,7 +131,6 @@ public class ScheduleDAO {
             schedule.setTheaterID(rs.getInt("TheaterID"));
             schedule.setStartDate(rs.getDate("StartDate"));
             schedule.setWeekday(rs.getString("Weekday"));
-            schedule.setShowNumber(rs.getInt("ShowNumber"));
             schedule.setStartTime(rs.getTime("StartTime"));
             schedules.add(schedule);
         }
@@ -166,7 +162,6 @@ public class ScheduleDAO {
             schedule.setTheaterID(rs.getInt("TheaterID"));
             schedule.setStartDate(rs.getDate("StartDate"));
             schedule.setWeekday(rs.getString("Weekday"));
-            schedule.setShowNumber(rs.getInt("ShowNumber"));
             schedule.setStartTime(rs.getTime("StartTime"));
         }
 

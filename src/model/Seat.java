@@ -2,13 +2,15 @@ package model;
 
 public class Seat {
     private String seatID;
+    private int scheduleID;
     private int theaterID;
     private boolean isOccupied;
 
     public Seat() {}
 
-    public Seat(String seatID, int theaterID, boolean isOccupied) {
+    public Seat(String seatID, int scheduleID, int theaterID, boolean isOccupied) {
         this.seatID = seatID;
+        this.setScheduleID(scheduleID);
         this.theaterID = theaterID;
         this.isOccupied = isOccupied;
     }
@@ -36,4 +38,12 @@ public class Seat {
     public void setOccupied(boolean isOccupied) {
         this.isOccupied = isOccupied;
     }
+
+	public int getScheduleID() {
+		return scheduleID;
+	}
+
+	public void setScheduleID(int scheduleID) {
+		this.scheduleID = scheduleID;
+	}
 }

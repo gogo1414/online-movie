@@ -31,7 +31,7 @@ import model.Theater;
 import model.Ticket;
 
 public class SeatScreen extends JFrame {
-  
+    
     private Booking booking;
     private Ticket ticket;
     private Theater theater;
@@ -60,6 +60,8 @@ public class SeatScreen extends JFrame {
     private JButton reservationButton;
 
     private JLabel selectedSeatLabel;
+    private JLabel seatedCounterLabel = new JLabel("좌석 현황");
+    private JLabel seatedCounterLabel2 = new JLabel(TOTAL_SEATS - occupiedSeats + " / " + TOTAL_SEATS);
 
     private JLabel totalPriceLabel;
     
@@ -149,36 +151,26 @@ public class SeatScreen extends JFrame {
                 JOptionPane.showMessageDialog(SeatScreen.this, "결제 방법을 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(SeatScreen.this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
-               
+                
                 if(AllMovieInfo.changeReservation==1) {
-                	 try {
-                		 System.out.println("delete bookingID");
-                         bookingDao.deleteBooking(AllMovieInfo.bookingID);
-                        
-                    
-                     } catch (SQLException ex) {
-                         ex.printStackTrace();
-                       
-                     }
-                	 
+                	try {
+						bookingDao.deleteBooking(AllMovieInfo.bookingID);
+						AllMovieInfo.changeReservation=0;
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                	
                 }
-               
+                
                 makeDate();
                 booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
                 
                 try {
                     booking = bookingDao.addBooking(booking);
-                    AllMovieInfo.changeReservation=0;
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
-                
-                try {
-					seatDao.updateSeatOccupiedStatus(selectedSeat, schedule.getTheaterID(), true);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
                 
                 ticket = new Ticket(
                 		schedule.getScheduleID(),
@@ -206,6 +198,12 @@ public class SeatScreen extends JFrame {
         selectedSeatLabel = new JLabel("선택된 좌석: None");
         selectedSeatLabel.setBounds(700, 500, 200, 30);
         mainPanel.add(selectedSeatLabel);
+
+        seatedCounterLabel.setBounds(320, 610, 100, 100);
+        mainPanel.add(seatedCounterLabel);
+
+        seatedCounterLabel2.setBounds(320, 630, 100, 100);
+        mainPanel.add(seatedCounterLabel2);
 
         totalPriceLabel = new JLabel("결제 금액: 0");
         totalPriceLabel.setBounds(700, 450, 150, 30);
@@ -274,6 +272,7 @@ public class SeatScreen extends JFrame {
             selectedSeatLabel.setText("선택된 좌석: " + selectedSeat);
             totalPriceLabel.setText("결제 금액: " + SEAT_PRICE);
         }
+        seatedCounterLabel2.setText(TOTAL_SEATS - ( occupiedSeats + (selectedSeat != null ? 1 : 0)) + " / " + TOTAL_SEATS);
     }
 
     public static void main(String[] args) {

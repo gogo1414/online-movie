@@ -18,7 +18,7 @@ public class ScheduleDAO {
 	public List<String> getAllScheduleDate() throws SQLException {
         List<String> theatersName = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT StartDate FROM schedules";
+        String query = "SELECT StartDate FROM schedules ORDER BY ASCENDING";
         PreparedStatement stmt = conn.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
 
@@ -33,7 +33,7 @@ public class ScheduleDAO {
 	public List<String> getAllScheduleTime() throws SQLException {
         List<String> theatersName = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT StartTime FROM schedules";
+        String query = "SELECT StartTime FROM schedules ORDER BY ASCENDING";
         PreparedStatement stmt = conn.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
 
@@ -48,7 +48,7 @@ public class ScheduleDAO {
     public List<Schedule> getSchedulesByTheaterAndMovie(int theaterID, int movieID) throws SQLException {
         List<Schedule> schedules = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM schedules WHERE TheaterID = ? AND MovieID = ?";
+        String query = "SELECT * FROM schedules WHERE TheaterID = ? AND MovieID = ? ";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, theaterID);
         stmt.setInt(2, movieID);

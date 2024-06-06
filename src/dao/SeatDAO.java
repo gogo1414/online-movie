@@ -97,7 +97,16 @@ public class SeatDAO {
         stmt.executeUpdate();
     }
 
-
+    public void updateSeatOccupiedStatus(String seatID, int theaterID, boolean isOccupied) throws SQLException {
+        Connection conn = DBConnection.getConnection();
+        String query = "UPDATE seats SET IsOccupied = ? WHERE SeatID = ? AND TheaterID = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setBoolean(1, isOccupied);
+        stmt.setString(2, seatID);
+        stmt.setInt(3, theaterID);
+        stmt.executeUpdate();
+    }
+    
     public void deleteSeat(String seatID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM seats WHERE SeatID = ?";

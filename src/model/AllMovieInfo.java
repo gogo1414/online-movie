@@ -16,5 +16,18 @@ public class AllMovieInfo {
 	public static int nowIdx =0;
 	public static int changeReservation = 0;
 	
+	public static void init() {
+		booking  = null;
+		movie = null;
+		schedule = null;
+		seats = null;
+		theater = null;
+		ticket= null;
+		catalog = null;
+		whatIsIt = null;
+		bookingID = 0;
+		changeReservation = 0;
+		
+	}
 
 }

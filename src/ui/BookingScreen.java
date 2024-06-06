@@ -21,6 +21,7 @@ import dao.MovieDAO;
 import dao.ScheduleDAO;
 import dao.SeatDAO;
 import dao.TheaterDAO;
+import find_catalog.FindMovieCatalog;
 import model.AllMovieInfo;
 import model.Booking;
 import model.Movie;
@@ -102,8 +103,13 @@ public class BookingScreen extends JFrame {
         backButton.setBounds(50, 800, 100, 70);
         mainPanel.add(backButton);
         backButton.addActionListener(e -> {
+        	if(AllMovieInfo.changeReservation==1) {
+        		JOptionPane.showMessageDialog(BookingScreen.this, "예약 변경을 완료해주세요", "오류", JOptionPane.ERROR_MESSAGE);
+        	}
+        	else {
             new MovieDetailsScreen(AllMovieInfo.movie, AllMovieInfo.catalog).setVisible(true);
             dispose();
+        	}
         });
 
         add(mainPanel);

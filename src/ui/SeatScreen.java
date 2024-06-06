@@ -165,12 +165,7 @@ public class SeatScreen extends JFrame {
                 JOptionPane.showMessageDialog(SeatScreen.this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
                 
                 if (AllMovieInfo.changeReservation == 1) {
-                    try {
-                        bookingDao.deleteBooking(AllMovieInfo.bookingID);
-                        AllMovieInfo.changeReservation = 0;
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
+                    AllMovieInfo.changeReservation = 0;
                 }
                 
                 makeDate();

@@ -56,7 +56,12 @@ public class BookingHistoryScreen extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        tableModel = new DefaultTableModel(new Object[]{"예약 번호", "영화명", "상영일", "상영관번호", "좌석번호", "판매가격"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"예약 번호", "영화명", "상영일", "상영관번호", "좌석번호", "판매가격"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // 모든 셀을 수정 불가로 설정
+            }
+        };
         bookingTable = new JTable(tableModel);
         bookingTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -162,20 +167,16 @@ public class BookingHistoryScreen extends JFrame {
     }
 
     private void modifyBooking(int bookingID) {
-    	AllMovieInfo.bookingID = bookingID;
-    	AllMovieInfo.changeReservation=1;
-    	int selectedRow = bookingTable.getSelectedRow();
+        AllMovieInfo.bookingID = bookingID;
+        AllMovieInfo.changeReservation = 1;
+        int selectedRow = bookingTable.getSelectedRow();
         tableModel.removeRow(selectedRow);
-    	try {
-			new BookingScreen().setVisible(true);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	dispose();
-        // 예매 변경 로직을 여기에 추가하십시오
-        // 예를 들어, 새로운 창을 열어 예매 변경을 처리하거나, 기존 데이터를 수정할 수 있습니다.
-       
+        try {
+            new BookingScreen().setVisible(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        dispose();
     }
 
     private void showBookingDetails(int bookingID) {

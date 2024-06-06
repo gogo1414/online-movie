@@ -62,7 +62,7 @@ public class BookingHistoryScreen extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(bookingList);
 
-        cancelButton = new JButton("Cancel Booking");
+        cancelButton = new JButton("예약 취소");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,12 +71,12 @@ public class BookingHistoryScreen extends JFrame {
                     int bookingID = Integer.parseInt(listModel.getElementAt(selectedBookingIndex).split(":")[0]);
                     cancelBooking(bookingID);
                 } else {
-                    JOptionPane.showMessageDialog(BookingHistoryScreen.this, "Please select a booking to cancel.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(BookingHistoryScreen.this, "취소할 예약을 선택하세요.", "경고", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
 
-        detailsButton = new JButton("View Details");
+        detailsButton = new JButton("상세 보기");
         detailsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,12 +85,12 @@ public class BookingHistoryScreen extends JFrame {
                     int bookingID = Integer.parseInt(listModel.getElementAt(selectedBookingIndex).split(":")[0]);
                     viewBookingDetails(bookingID);
                 } else {
-                    JOptionPane.showMessageDialog(BookingHistoryScreen.this, "Please select a booking to view details.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(BookingHistoryScreen.this, "상세 정보를 볼 예약을 선택하세요.", "경고", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
 
-        viewTicketButton = new JButton("View Ticket");
+        viewTicketButton = new JButton("티켓 보기");
         viewTicketButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,12 +99,12 @@ public class BookingHistoryScreen extends JFrame {
                     int bookingID = Integer.parseInt(listModel.getElementAt(selectedBookingIndex).split(":")[0]);
                     viewTicketDetails(bookingID);
                 } else {
-                    JOptionPane.showMessageDialog(BookingHistoryScreen.this, "Please select a booking to view ticket.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(BookingHistoryScreen.this, "티켓을 볼 예약을 선택하세요.", "경고", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
         
-        backButton = new JButton("Back");
+        backButton = new JButton("뒤로 가기");
         backButton.addActionListener(e -> {
             new MainMenuScreen(MainMenuScreen.customer).setVisible(true);
             dispose();
@@ -143,7 +143,7 @@ public class BookingHistoryScreen extends JFrame {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading bookings.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "예약 내역을 불러오는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -154,7 +154,7 @@ public class BookingHistoryScreen extends JFrame {
             listModel.removeElementAt(bookingList.getSelectedIndex());
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error cancelling booking.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "예약을 취소하는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -169,7 +169,7 @@ public class BookingHistoryScreen extends JFrame {
                 "\n결제 날짜: " + booking.getPaymentDate());
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error fetching booking details.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "예약 세부 정보를 불러오는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -187,7 +187,7 @@ public class BookingHistoryScreen extends JFrame {
                 "\n결제 금액: " + ticket.getSalePrice());
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error fetching ticket details.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "티켓 세부 정보를 불러오는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
     }
 

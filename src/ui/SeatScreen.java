@@ -64,7 +64,7 @@ public class SeatScreen extends JFrame {
 
     private JLabel totalPriceLabel;
     
-    private JButton backButton = new JButton("Back");
+    private JButton backButton = new JButton("뒤로가기");
 
     private JButton cardButton;
     private JButton cashButton;
@@ -145,11 +145,11 @@ public class SeatScreen extends JFrame {
         reservationButton.setLocation(700, 600);
         reservationButton.addActionListener(e -> {
             if (selectedSeat == null) {
-                JOptionPane.showMessageDialog(SeatScreen.this, "No seats selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(SeatScreen.this, "좌석이 선택되지 않았습니다.", "오류", JOptionPane.ERROR_MESSAGE);
             } else if (selectedMethod == null) {
-                JOptionPane.showMessageDialog(SeatScreen.this, "Please select a payment method.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(SeatScreen.this, "결제 방법을 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(SeatScreen.this, "Reserved seat: " + selectedSeat, "Reservation Successful", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(SeatScreen.this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
                 
                 makeDate();
                 booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
@@ -198,7 +198,7 @@ public class SeatScreen extends JFrame {
         mainPanel.add(totalPriceLabel);
 
         // Add the payment method buttons
-        cardButton = new JButton("Card");
+        cardButton = new JButton("카드");
         cardButton.setBounds(700, 550, 80, 30);
         cardButton.addActionListener(e -> {
             selectedMethod = "Card";
@@ -207,7 +207,7 @@ public class SeatScreen extends JFrame {
         });
         mainPanel.add(cardButton);
 
-        cashButton = new JButton("Cash");
+        cashButton = new JButton("현금");
         cashButton.setBounds(800, 550, 80, 30);
         cashButton.addActionListener(e -> {
             selectedMethod = "Cash";

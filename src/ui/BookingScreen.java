@@ -71,7 +71,7 @@ public class BookingScreen extends JFrame {
     private JLabel timeLabel = new JLabel("시간 : ");
 
     private JButton reservationButton = new JButton("예약하기");
-    private JButton backButton = new JButton("Back");
+    private JButton backButton = new JButton("뒤로가기");
 
     public BookingScreen() throws SQLException {
 
@@ -97,11 +97,11 @@ public class BookingScreen extends JFrame {
         // ******최종 예약 패널**********
         makePanel(650, 550, 200, 200, "reservationPanel");
 
-        //*******backButton********
+        //*******뒤로가기 버튼********
         backButton.setBounds(50, 800, 100, 70);
         mainPanel.add(backButton);
         backButton.addActionListener(e -> {
-            new MovieDetailsScreen(AllMovieInfo.movie,AllMovieInfo.catalog).setVisible(true);
+            new MovieDetailsScreen(AllMovieInfo.movie, AllMovieInfo.catalog).setVisible(true);
             dispose();
         });
 
@@ -298,15 +298,13 @@ public class BookingScreen extends JFrame {
                 JOptionPane.showMessageDialog(this, "모든 항목을 선택해야 합니다.", "경고", JOptionPane.WARNING_MESSAGE);
             } else {
             	try {
-					schedule = scheduleDAO.getAllScheduleDateAndTime(selectedStartDate,selectedStartTime);
+					schedule = scheduleDAO.getAllScheduleDateAndTime(selectedStartDate, selectedStartTime);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
                 try {
 					new SeatScreen(schedule).setVisible(true);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
                 dispose();
@@ -327,7 +325,7 @@ public class BookingScreen extends JFrame {
     public void loadTheaters() throws SQLException {
         theaters = theaterDAO.getAllTheaters();
         for (Theater theater : theaters) {
-        	if(theater.isActive()) {
+        	if (theater.isActive()) {
         		listModel2.addElement(theater.getTheaterName());
             }
         }
@@ -338,7 +336,7 @@ public class BookingScreen extends JFrame {
     	listModel3.clear();
     	theater = null;
     	movie = null;
-    	if(selectedTheaterName != null && selectedMovieTitle != null) {
+    	if (selectedTheaterName != null && selectedMovieTitle != null) {
     		theater = theaterDAO.getTheaterByName(selectedTheaterName);
     		movie = movieDAO.getMovieByTitle(selectedMovieTitle);
     		startDates = scheduleDAO.getSchedulesByTheaterAndMovie(theater.getTheaterID(), movie.getMovieID());

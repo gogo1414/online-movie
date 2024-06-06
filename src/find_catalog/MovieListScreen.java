@@ -44,7 +44,7 @@ public class MovieListScreen extends JFrame {
         JScrollPane scrollPane = new JScrollPane(movieList);
         scrollPane.setBounds(20, 20, 300, 400); // 위치와 크기를 설정
 
-        JButton detailsButton = new JButton("View Details");
+        JButton detailsButton = new JButton("상세보기");
         detailsButton.setBounds(350, 20, 120, 30); // 위치와 크기를 설정
         detailsButton.addActionListener(new ActionListener() {
             @Override
@@ -54,34 +54,34 @@ public class MovieListScreen extends JFrame {
                 Movie selectedMovie = null;
                 if (selectedMovieCatalogue != null) {
                     try {
-                    	if(MovieListScreen.catalogue == "영화명") {
+                    	if(MovieListScreen.catalogue.equals("영화명")) {
                     		selectedMovie = movieDAO.getMovieByTitle(selectedMovieCatalogue);
                         }
-                    	else if(MovieListScreen.catalogue == "배우명") {
+                    	else if(MovieListScreen.catalogue.equals("배우명")) {
                     		selectedMovie = movieDAO.getMovieByActor(selectedMovieCatalogue);
                     	}
-                    	else if(MovieListScreen.catalogue == "감독명") {
+                    	else if(MovieListScreen.catalogue.equals("감독명")) {
                     		selectedMovie = movieDAO.getMovieByDirector(selectedMovieCatalogue);
                     	}
-                    	else if(MovieListScreen.catalogue == "장르") {
+                    	else if(MovieListScreen.catalogue.equals("장르")) {
                     		selectedMovie = movieDAO.getMovieByGenre(selectedMovieCatalogue);
                     	}
                     	
                         if (selectedMovie != null) {
-                            new MovieDetailsScreen(selectedMovie,catalogue).setVisible(true);
+                            new MovieDetailsScreen(selectedMovie, catalogue).setVisible(true);
                             dispose();
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(MovieListScreen.this, "Error fetching movie details.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(MovieListScreen.this, "영화 정보를 가져오는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(MovieListScreen.this, "Please select a movie.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(MovieListScreen.this, "영화를 선택해주세요.", "경고", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
         
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton("뒤로가기");
         backButton.setBounds(350, 60, 120, 30); // 위치와 크기를 설정
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -105,16 +105,16 @@ public class MovieListScreen extends JFrame {
         try {
             List<Movie> movies = movieDAO.getAllMovies();
             for (Movie movie : movies) {
-            	if(catalogue == "영화명") {
+            	if (catalogue.equals("영화명")) {
             		listModel.addElement(movie.getTitle());
             		}
-            	else if (catalogue == "감독명") {
+            	else if (catalogue.equals("감독명")) {
             		listModel.addElement(movie.getDirector());
             	}
-            	else if (catalogue == "배우명") {
+            	else if (catalogue.equals("배우명")) {
             		listModel.addElement(movie.getActors());
             	}
-            	else if (catalogue == "장르") {
+            	else if (catalogue.equals("장르")) {
             		listModel.addElement(movie.getGenre());
             	}
             	else {
@@ -123,7 +123,7 @@ public class MovieListScreen extends JFrame {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading movies.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "영화 목록을 불러오는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
     }
 

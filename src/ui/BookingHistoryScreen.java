@@ -134,7 +134,7 @@ public class BookingHistoryScreen extends JFrame {
 
     private void loadBookings() {
         try {
-            List<Booking> bookings = bookingDAO.getBookingsByCustomer(MainMenuScreen.customer.getCustomerID());
+            List<Booking> bookings = bookingDAO.getBookingsByCustomer(customer.getCustomerID());
             for (Booking booking : bookings) {
                 Ticket ticket = ticketDAO.getTicketByBookingID(booking.getBookingID());
                 Schedule schedule = scheduleDAO.getScheduleByID(ticket.getScheduleID());

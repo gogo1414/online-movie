@@ -46,8 +46,10 @@ public class BookingHistoryScreen extends JFrame {
     private JButton modifyButton; // 예약 변경 버튼
     private JButton backButton;
     
-    private int theaterID;
+    private int scheduleID;
     private String seatID;
+    
+    private Schedule schedule;
 
     public BookingHistoryScreen(Customer customer) {
         this.customer = customer;
@@ -90,7 +92,6 @@ public class BookingHistoryScreen extends JFrame {
                 int selectedRow = bookingTable.getSelectedRow();
                 if (selectedRow != -1) {
                     int bookingID = (int) tableModel.getValueAt(selectedRow, 0);
-                    theaterID = (int) tableModel.getValueAt(selectedRow, 3);
                     seatID = (String) tableModel.getValueAt(selectedRow, 4);
                     cancelBooking(bookingID);
                 } else {
@@ -106,8 +107,6 @@ public class BookingHistoryScreen extends JFrame {
                 int selectedRow = bookingTable.getSelectedRow();
                 if (selectedRow != -1) {
                     int bookingID = (int) tableModel.getValueAt(selectedRow, 0);
-                    theaterID = (int) tableModel.getValueAt(selectedRow, 3);
-                    seatID = (String) tableModel.getValueAt(selectedRow, 4);
                     modifyBooking(bookingID);
                 } else {
                     JOptionPane.showMessageDialog(BookingHistoryScreen.this, "변경할 예약을 선택하세요.", "경고", JOptionPane.WARNING_MESSAGE);
@@ -147,14 +146,14 @@ public class BookingHistoryScreen extends JFrame {
             List<Booking> bookings = bookingDAO.getBookingsByCustomer(customer.getCustomerID());
             for (Booking booking : bookings) {
                 Ticket ticket = ticketDAO.getTicketByBookingID(booking.getBookingID());
-                Schedule schedule = scheduleDAO.getScheduleByID(ticket.getScheduleID());
-                Movie movie = movieDAO.getMovieByID(schedule.getMovieID());
+                Schedule schedule2 = scheduleDAO.getScheduleByID(ticket.getScheduleID());
+                Movie movie = movieDAO.getMovieByID(schedule2.getMovieID());
                 Seat seat = seatDAO.getSeatByID(ticket.getSeatID());
                 tableModel.addRow(new Object[]{
                     booking.getBookingID(),
                     movie.getTitle(),
-                    schedule.getStartDate() + " " + schedule.getStartTime(),
-                    schedule.getTheaterID(),
+                    schedule2.getStartDate() + " " + schedule2.getStartTime(),
+                    schedule2.getTheaterID(),
                     seat.getSeatID(),
                     ticket.getSalePrice()
                 });
@@ -167,8 +166,8 @@ public class BookingHistoryScreen extends JFrame {
 
     private void cancelBooking(int bookingID) {
         try {
-        	seatDAO.updateSeatOccupiedStatus(seatID, theaterID, false);
-        	theaterDAO.increaseSeatCount(theaterID);
+        	Ticket ticket = ticketDAO.getTicketByBookingID(bookingID);
+        	seatDAO.updateSeatOccupiedStatus(ticket.getSeatID(), ticket.getScheduleID(), false);
             bookingDAO.deleteBooking(bookingID);
             if(AllMovieInfo.changeReservation==0) JOptionPane.showMessageDialog(this, "예약 취소 성공.");
             int selectedRow = bookingTable.getSelectedRow();

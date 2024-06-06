@@ -32,12 +32,12 @@ public class SeatDAO {
         return seats;
     }
     
-    public List<Seat> getAllSeats(int theaterID) throws SQLException {
+    public List<Seat> getAllSeats(int scheduleID) throws SQLException {
         List<Seat> seats = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String query = "SELECT * FROM seats WHERE TheaterID = ?";
+        String query = "SELECT * FROM seats WHERE ScheduleID = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, theaterID);
+        stmt.setInt(1, scheduleID);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {

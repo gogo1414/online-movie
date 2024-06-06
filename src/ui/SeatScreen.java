@@ -47,7 +47,6 @@ public class SeatScreen extends JFrame {
     private static int ROW = 10;
     private static int HEIGHT = 10;
     private static final int SEAT_PRICE = 10000;
-    private int occupiedSeats = 0;
     private String selectedSeat = null;
     private char[] rows;
     private int[] cols;
@@ -82,7 +81,7 @@ public class SeatScreen extends JFrame {
 
     private void initializeTheater() throws SQLException {
         theater = theaterDao.getTheaterByID(schedule.getTheaterID());
-        seats = seatDao.getAllSeats(theater.getTheaterID());
+        seats = seatDao.getAllSeats(schedule.getScheduleID());
         ROW = theater.getHeight();
         HEIGHT = theater.getWidth();
         initializeRowsAndCols();
@@ -164,8 +163,7 @@ public class SeatScreen extends JFrame {
         seatButton.setBackground(isOccupied ? Color.green : Color.gray);
         seatButton.setSize(10, 10);
         seatButton.setEnabled(!isOccupied);
-        if (isOccupied) occupiedSeats++;
-        else seatButton.addActionListener(new SeatButtonListener(rows[row], col + 1));
+        if (!isOccupied) seatButton.addActionListener(new SeatButtonListener(rows[row], col + 1));
         seatsGrid.add(seatButton);
     }
 
@@ -191,6 +189,8 @@ public class SeatScreen extends JFrame {
         JOptionPane.showMessageDialog(this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
         if (AllMovieInfo.changeReservation == 1) {
             try {
+            	Ticket ticket = ticketDao.getTicketByBookingID(AllMovieInfo.bookingID);
+            	seatDao.updateSeatOccupiedStatus(ticket.getSeatID(), ticket.getScheduleID(), false);
                 bookingDao.deleteBooking(AllMovieInfo.bookingID);
                 AllMovieInfo.changeReservation = 0;
             } catch (SQLException e) {
@@ -201,10 +201,9 @@ public class SeatScreen extends JFrame {
         booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
         try {
             booking = bookingDao.addBooking(booking);
-            seatDao.updateSeatOccupiedStatus(selectedSeat, theater.getTheaterID(), true);
+            seatDao.updateSeatOccupiedStatus(selectedSeat, schedule.getScheduleID(), true);
             ticket = new Ticket(schedule.getScheduleID(), schedule.getTheaterID(), selectedSeat, booking.getBookingID(), 1, SEAT_PRICE, SEAT_PRICE);
             ticketDao.addTicket(ticket);
-            theaterDao.decreaseSeatCount(theater.getTheaterID());
         } catch (SQLException e) {
             e.printStackTrace();
         }

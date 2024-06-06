@@ -42,16 +42,16 @@ public class SeatScreen extends JFrame {
     private TicketDAO ticketDao;
     private SeatDAO seatDao;
     
-    private static final int ROW = 10;
-    private static final int HEIGHT = 10;
+    private static int ROW = 10;
+    private static int HEIGHT = 10;
     private static final int SEAT_PRICE = 10000;
     private final int TOTAL_SEATS = 255;
     private int occupiedSeats = 0;
 
     private String selectedSeat = null;
 
-    private char[] rows = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-    private int[] cols = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private char[] rows;
+    private int[] cols;
     
     private JButton selectedSeatButton = null;
     private JPanel mainPanel;
@@ -82,6 +82,20 @@ public class SeatScreen extends JFrame {
         theater = theaterDao.getTheaterByID(schedule.getTheaterID());
         seats = seatDao.getAllSeats(theater.getTheaterID());
 
+        ROW = theater.getHeight();
+        HEIGHT = theater.getWidth();
+        
+        // Initialize rows and columns based on theater dimensions
+        rows = new char[ROW];
+        for (int i = 0; i < ROW; i++) {
+            rows[i] = (char) ('A' + i);
+        }
+
+        cols = new int[HEIGHT];
+        for (int i = 0; i < HEIGHT; i++) {
+            cols[i] = i + 1;
+        }
+        
         setTitle("Seat Selection");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -129,10 +143,10 @@ public class SeatScreen extends JFrame {
                 seatButton.setSize(10, 10);
                 seatButton.setEnabled(!isOccupied);
                 
-                if(isOccupied)
-                   occupiedSeats++;
+                if (isOccupied)
+                    occupiedSeats++;
                 else
-                   seatButton.addActionListener(new SeatButtonListener(rows[row], col + 1));
+                    seatButton.addActionListener(new SeatButtonListener(rows[row], col + 1));
                 seatsGrid.add(seatButton);
             }
         }
@@ -150,17 +164,14 @@ public class SeatScreen extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(SeatScreen.this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
                 
-                if(AllMovieInfo.changeReservation==1) {
-                	try {
-						bookingDao.deleteBooking(AllMovieInfo.bookingID);
-						AllMovieInfo.changeReservation=0;
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                	
+                if (AllMovieInfo.changeReservation == 1) {
+                    try {
+                        bookingDao.deleteBooking(AllMovieInfo.bookingID);
+                        AllMovieInfo.changeReservation = 0;
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-                
                 
                 makeDate();
                 
@@ -173,11 +184,10 @@ public class SeatScreen extends JFrame {
                 }
                 
                 try {
-               seatDao.updateSeatOccupiedStatus(selectedSeat, schedule.getTheaterID(), true);
-            } catch (SQLException e1) {
-               // TODO Auto-generated catch block
-               e1.printStackTrace();
-            }
+                    seatDao.updateSeatOccupiedStatus(selectedSeat, schedule.getTheaterID(), true);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
                 
                 ticket = new Ticket(
                       schedule.getScheduleID(),
@@ -189,18 +199,16 @@ public class SeatScreen extends JFrame {
                       SEAT_PRICE);
                 
                 try {
-               ticketDao.addTicket(ticket);
-            } catch (SQLException e1) {
-               // TODO Auto-generated catch block
-               e1.printStackTrace();
-            }
+                    ticketDao.addTicket(ticket);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
                 
                 try {
-               theaterDao.decreaseSeatCount(theater.getTheaterID());
-            } catch (SQLException e1) {
-               // TODO Auto-generated catch block
-               e1.printStackTrace();
-            }
+                    theaterDao.decreaseSeatCount(theater.getTheaterID());
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
                 
                 new MainMenuScreen(MainMenuScreen.customer).setVisible(true);
                 dispose();
@@ -287,7 +295,6 @@ public class SeatScreen extends JFrame {
          try {
             new SeatScreen(null).setVisible(true);
          } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
          }
       });

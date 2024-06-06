@@ -190,9 +190,9 @@ public class AdminPanel extends JFrame {
         	    "('Movie 12', '105 min', 'PG', 'Director 12', '홍길동', 'Family', 'Story 12', '2023-12-25', 84);",
 
         	    "INSERT INTO theaters (SeatCount, TheaterName, IsActive, Width, Height) VALUES " +
-        	    "(100, '1대입구', 1, 4, 4), " +
-        	    "(100, '2대입구', 1, 4, 4), " +
-        	    "(100, '3대입구', 1, 4, 4), " +
+        	    "(98, '1대입구', 1, 4, 4), " +
+        	    "(97, '2대입구', 1, 4, 4), " +
+        	    "(95, '3대입구', 1, 4, 4), " +
         	    "(100, '4대입구', 1, 4, 4), " +
         	    "(100, '5대입구', 1, 4, 4), " +
         	    "(100, '6대입구', 0, 4, 4), " +

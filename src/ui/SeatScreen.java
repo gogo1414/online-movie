@@ -189,7 +189,6 @@ public class SeatScreen extends JFrame {
     private void processReservation() {
         JOptionPane.showMessageDialog(this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
        
-        System.out.println("fuck*********************************");
         makeDate();
         booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
         try {

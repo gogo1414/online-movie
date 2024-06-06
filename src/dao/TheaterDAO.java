@@ -102,6 +102,14 @@ public class TheaterDAO {
         stmt.executeUpdate();
     }
     
+    public void decreaseSeatCount(int theaterID) throws SQLException {
+        Connection conn = DBConnection.getConnection();
+        String query = "UPDATE theaters SET SeatCount = SeatCount - 1 WHERE TheaterID = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, theaterID);
+        stmt.executeUpdate();
+    }
+    
     public void deleteTheater(int theaterID) throws SQLException {
         Connection conn = DBConnection.getConnection();
         String query = "DELETE FROM theaters WHERE TheaterID = ?";

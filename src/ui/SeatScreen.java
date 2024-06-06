@@ -164,6 +164,7 @@ public class SeatScreen extends JFrame {
                 }
                 
                 makeDate();
+                
                 booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
                 
                 try {
@@ -183,6 +184,13 @@ public class SeatScreen extends JFrame {
                 
                 try {
 					ticketDao.addTicket(ticket);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                
+                try {
+					theaterDao.decreaseSeatCount(theater.getTheaterID());
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

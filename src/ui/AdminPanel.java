@@ -183,8 +183,8 @@ public class AdminPanel extends JFrame {
             	    "(100, '1대입구', 1, 4, 4)," +
             	    "(100, '2대입구', 1, 4, 4)," +
             	    "(100, '3대입구', 1, 4, 4)," +
-            	    "(100, '4대입구', 0, 4, 4)," +
-            	    "(100, '5대입구', 0, 4, 4)," +
+            	    "(100, '4대입구', 1, 4, 4)," +
+            	    "(100, '5대입구', 1, 4, 4)," +
             	    "(100, '6대입구', 0, 4, 4)," +
             	    "(100, '7대입구', 0, 4, 4)," +
             	    "(100, '8대입구', 0, 4, 4)," +
@@ -421,7 +421,7 @@ public class AdminPanel extends JFrame {
 
     private void showAllTablesWindow() {
         JFrame allTablesFrame = new JFrame("전체 테이블 보기");
-        allTablesFrame.setSize(1000, 1000);
+        allTablesFrame.setSize(900, 900);
 
         JTextArea resultArea = new JTextArea(10, 50);
         resultArea.setEditable(false);

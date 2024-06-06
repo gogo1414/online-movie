@@ -62,7 +62,7 @@ public class SeatScreen extends JFrame {
     private JButton cardButton;
     private JButton cashButton;
     private String selectedMethod = null;
-    private String currentDate = "2023-01-01";
+    private String currentDate = "2024-06-07";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private Date date = null;
     

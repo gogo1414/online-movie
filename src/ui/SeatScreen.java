@@ -23,6 +23,7 @@ import dao.BookingDAO;
 import dao.SeatDAO;
 import dao.TheaterDAO;
 import dao.TicketDAO;
+import model.AllMovieInfo;
 import model.Booking;
 import model.Schedule;
 import model.Seat;
@@ -30,7 +31,7 @@ import model.Theater;
 import model.Ticket;
 
 public class SeatScreen extends JFrame {
-    
+  
     private Booking booking;
     private Ticket ticket;
     private Theater theater;
@@ -148,12 +149,26 @@ public class SeatScreen extends JFrame {
                 JOptionPane.showMessageDialog(SeatScreen.this, "결제 방법을 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(SeatScreen.this, "예약된 좌석: " + selectedSeat, "예약 완료", JOptionPane.INFORMATION_MESSAGE);
-                
+               
+                if(AllMovieInfo.changeReservation==1) {
+                	 try {
+                		 System.out.println("delete bookingID");
+                         bookingDao.deleteBooking(AllMovieInfo.bookingID);
+                        
+                    
+                     } catch (SQLException ex) {
+                         ex.printStackTrace();
+                       
+                     }
+                	 
+                }
+               
                 makeDate();
                 booking = new Booking(selectedMethod, 1, SEAT_PRICE, MainMenuScreen.customer.getCustomerID(), date);
                 
                 try {
                     booking = bookingDao.addBooking(booking);
+                    AllMovieInfo.changeReservation=0;
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }

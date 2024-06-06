@@ -12,8 +12,9 @@ public class AllMovieInfo {
 	public static Ticket ticket;
 	public static String catalog;
 	public static String whatIsIt;
+	public static int bookingID;
 	public static int nowIdx =0;
-	
+	public static int changeReservation = 0;
 	
 
 }

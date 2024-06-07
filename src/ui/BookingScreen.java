@@ -100,7 +100,7 @@ public class BookingScreen extends JFrame {
         makePanel(650, 550, 200, 200, "reservationPanel");
 
         //*******뒤로가기 버튼********
-        backButton.setBounds(100, 600, 100, 70);
+        backButton.setBounds(100, 700, 100, 70);
         mainPanel.add(backButton);
         backButton.addActionListener(e -> {
         	if(AllMovieInfo.changeReservation==1) {

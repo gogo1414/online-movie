@@ -269,13 +269,5 @@ public class SeatScreen extends JFrame {
     }
 
    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new SeatScreen(null).setVisible(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
+   
 }

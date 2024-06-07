@@ -139,12 +139,6 @@ public class DuplicateScreen extends JFrame{
 	        }
 	    }
 
-	    public static void main(String[] args) {
-	        SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-	                new DuplicateScreen("배우명","이동호").setVisible(true);
-	            }
-	        });
-	    }
+	    
+	    
 }

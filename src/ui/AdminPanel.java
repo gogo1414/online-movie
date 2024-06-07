@@ -612,7 +612,5 @@ public class AdminPanel extends JFrame {
         allTablesFrame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AdminPanel());
-    }
+    
 }

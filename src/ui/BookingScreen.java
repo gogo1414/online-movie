@@ -362,13 +362,5 @@ public class BookingScreen extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new BookingScreen().setVisible(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
+   
 }

@@ -127,12 +127,5 @@ public class MovieListScreen extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MovieListScreen("영화명").setVisible(true);
-            }
-        });
-    }
+    
 }

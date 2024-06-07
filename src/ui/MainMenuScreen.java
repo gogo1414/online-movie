@@ -79,12 +79,5 @@ public class MainMenuScreen extends JFrame {
         add(panel);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainMenuScreen(null).setVisible(true);
-            }
-        });
-    }
+   
 }

@@ -269,5 +269,5 @@ public class SeatScreen extends JFrame {
     }
 
    
-   
+    
 }
